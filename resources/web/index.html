@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body id="body">
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <header class="navbar navbar-expand">
       <div class="container">
         <a class="navbar-brand" href="#">DockerPanel<span id="serverTitle"></span></a>
       </div>
@@ -39,7 +39,11 @@
           <div class="card mb-3" id="console">
             <div class="card-header console">
               <h5>Console</h5>
-            </div><div class="card-body terminal" id="terminal-logs">text xd</div>
+            </div>
+            <div class="card-body terminal" id="terminal-logs">
+<span class="terminal-info">[INFO] This is some information</span>
+<span class="terminal-warn">[WARN] This is a warning</span>
+<span class="terminal-error">[ERROR] This is an error!</span></div>
             <div class="card-body terminal" id="terminal-input"><span id="terminal-container-name">container</span>:~/$ <input type="text" class="terminal" id="terminal-input-form" placeholder=""></div>
           </div>
           <div class="d-flex justify-content-center">
@@ -50,7 +54,7 @@
               <button type="button" class="btn btn-ctrl-btn" id="buttonRestart">restart</button>
             </div>
             <div class="col-md-3 btn-ctrl">
-              <button type="button" class="btn btn-ctrl-btn" id="buttonStop">stop</button>
+              <button type="button" class="btn btn-ctrl-btn" id="buttonStop">kill</button>
             </div>
           </div>
         </main>
