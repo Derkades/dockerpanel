@@ -9,6 +9,12 @@ $(document).ready(function() {
         $('#collapseContainerSpoiler > .list-group').html(text);
     });
 
+    $('.navbar-brand').click(function() {
+        $('main').css('display', 'none');
+        $('#information').css('display', 'initial');
+        window.selectedContainerId = undefined;
+    });
+
     loadConsoleText();
 });
 
