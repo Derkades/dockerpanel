@@ -8,12 +8,17 @@ $(document).ready(function() {
         });
         $('#collapseContainerSpoiler > .list-group').html(text);
     });
+
+    loadConsoleText();
 });
 
-function loadConsoleText(id) {
-    $.get('/api/get_console_log?id=' + id, function(data) {
-        alert(data);
-    });
+function loadConsoleText() {
+    if (window.selectedContainerId) {
+        $('#consoleViewPort').load('/api/get_container_logs?id=' + window.selectedContainerId);
+    } else {
+        $('#consoleViewPort').text('Loading..');
+        setTimeout(loadConsoleText, 500);
+    }
 }
 
 function setSelectedContainer(id, name) {
