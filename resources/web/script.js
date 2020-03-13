@@ -19,5 +19,7 @@ function loadConsoleText(id) {
 function setSelectedContainer(id, name) {
     window.selectedContainerId = id;
     $('#nav-container-' + id).addClass("active");
-    alert("selected container set to " + id + " " + name);
+    $('main').css('display', 'initial');
+    $('#information').css('display', 'none');
+    $('#serverTitle').text(" - " + name);
 }
