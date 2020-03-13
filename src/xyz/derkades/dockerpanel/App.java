@@ -88,7 +88,7 @@ public class App {
 	}
 	
 	public static Container getContainerByName(String containerName) {
-		for (Container container : docker().listContainersCmd().exec()) {
+		for (Container container : docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
 			for (String name : container.getNames()) {
 				if (name.substring(1).equals(containerName)) {
 					return container;
