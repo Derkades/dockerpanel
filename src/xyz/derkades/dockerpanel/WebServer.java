@@ -50,5 +50,9 @@ public class WebServer {
 	boolean isStopped() {
 		return this.server.isStopped();
 	}
+	
+	boolean isStarted() {
+		return this.server.isStarted();
+	}
 
 }
