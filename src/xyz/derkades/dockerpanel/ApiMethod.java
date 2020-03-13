@@ -6,14 +6,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import xyz.derkades.dockerpanel.api.GetAvailableContainers;
 import xyz.derkades.dockerpanel.api.GetContainerLogs;
+import xyz.derkades.dockerpanel.api.GetContainerStatus;
 import xyz.derkades.dockerpanel.api.GetUnavailableContainers;
+import xyz.derkades.dockerpanel.api.StartContainer;
+import xyz.derkades.dockerpanel.api.StopContainer;
 
 public abstract class ApiMethod {
 	
 	public static final ApiMethod[] METHODS = {
 			new GetAvailableContainers(),
 			new GetContainerLogs(),
+			new GetContainerStatus(),
 			new GetUnavailableContainers(),
+			new StartContainer(),
+			new StopContainer(),
 	};
 	
 	private String name;
