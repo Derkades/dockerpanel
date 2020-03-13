@@ -60,11 +60,8 @@ function loadConsoleText() {
 
             console.log("test12");
 
-            $.get('/api/get_container_status', params, function(data) {
-                console.log("test2");
-                var response = data.responseText;
-                console.log("response");
-                if (response == "running\n") {
+            $.get('/api/get_container_status', params, function(abc) {
+                if (abc.responseText == "running\n") {
                     console.log("yes");
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                 } else {
@@ -75,6 +72,7 @@ function loadConsoleText() {
             });
         });
     } else {
+        $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
         $('#terminal-logs').text('');
         setTimeout(loadConsoleText, 100);
     }
