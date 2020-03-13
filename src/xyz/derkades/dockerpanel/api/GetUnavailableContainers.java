@@ -20,7 +20,7 @@ public class GetUnavailableContainers extends ApiMethod {
 	public void call(Map<String, String> parameters, HttpServletResponse response) throws Exception {
 		Map<String, String> output = new HashMap<>();
 		
-		App.docker().listContainersCmd().exec().stream()
+		App.docker().listContainersCmd().withStatusFilter(App.allDockerStatuses).exec().stream()
 				.filter(Predicate.not(App::isValidContainer))
 				.forEach((container) -> output.put(container.getId(), container.getNames()[0].substring(1)));
 		

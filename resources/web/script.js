@@ -9,15 +9,48 @@ $(document).ready(function() {
         $('#collapseContainerSpoiler > .list-group').html(text);
     });
 
+    $('.navbar-brand').click(function() {
+        $('main').css('display', 'none');
+        $('#information').css('display', 'initial');
+        window.selectedContainerId = undefined;
+        $('#serverTitle').text("");
+    });
+
+    $('#buttonStart').click(function() {
+        var params = {
+            id: window.selectedContainerId
+        };
+        alert('start..');
+        $.post('start_container', params, function(){
+            alert('done!');
+        });
+    });
+
+    $('#buttonKill').click(function() {
+        var params = {
+            id: window.selectedContainerId
+        };
+        alert('stop..');
+        $.post('stop_container', params, function(){
+            alert('done!');
+        });
+    });
+
     loadConsoleText();
 });
 
 function loadConsoleText() {
     if (window.selectedContainerId) {
-        $('#consoleViewPort').load('/api/get_container_logs?id=' + window.selectedContainerId);
+        console.log($('#terminal-logs').text());
+        var scroll = $('#terminal-logs').text() == "Loading..";
+        $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+            if (scroll) {
+                $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
+            }
+        });
     } else {
-        $('#consoleViewPort').text('Loading..');
-        setTimeout(loadConsoleText, 500);
+        $('#terminal-logs').text('Loading..');
+        setTimeout(loadConsoleText, 100);
     }
 }
 

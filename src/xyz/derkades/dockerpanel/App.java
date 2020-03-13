@@ -2,6 +2,7 @@ package xyz.derkades.dockerpanel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,7 @@ public class App {
 	private static WebServer server;
 	private static List<String> containers;
 	private static DockerClient docker;
+	public static List<String> allDockerStatuses = Arrays.asList("created", "restarting", "running", "paused", "exited");
 	
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
@@ -52,7 +54,7 @@ public class App {
 		server.start();
 		
 		System.out.println("\nAll containers: ");
-		for (Container container : docker.listContainersCmd().exec()) {
+		for (Container container : docker.listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
 			if (container.getNames().length >= 1) {
 				System.out.println(" - " + container.getNames()[0].substring(1));
 			} else {
@@ -86,7 +88,7 @@ public class App {
 	}
 	
 	public static Container getContainerByName(String containerName) {
-		for (Container container : docker().listContainersCmd().exec()) {
+		for (Container container : docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
 			for (String name : container.getNames()) {
 				if (name.substring(1).equals(containerName)) {
 					return container;
