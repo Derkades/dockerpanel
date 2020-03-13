@@ -1,6 +1,7 @@
 :root {
   --main-bg-color: hsla(0,0%,90%,1.00);
   --header-bg-color: color: hsla(240,19%,14%,1.00);
+  --console-status-color: color: hsla(102,75%,35%,1.00);
   --console-bg-color: hsla(0,0%,10%,1.00);
   --console-text-color: hsla(0,0%,90%,1.00);
 }
@@ -12,6 +13,12 @@ html, body {
 header {
   background-color: var(--header-bg-color);
   
+}
+
+footer {
+  padding-top: 50px;
+  width: 100%;
+  text-align: right;
 }
 
 *:focus {
@@ -38,6 +45,29 @@ span.terminal-info {
 
 span.terminal-error {
   color: hsla(0,75%,58%,1.00);
+}
+
+#console-header {
+  width: 100%;
+}
+
+span.console-status {
+  text-align: right;
+  text-shadow: 0px 0px 10px white;
+}
+
+#console-status-point {
+  height: 8px;
+  width: 8px;
+  transform: translateY(-3px);
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0px 0px 10px 0px white;
+}
+
+#console-status-text {
+  padding-left: 8px;
 }
 
 #content {
@@ -114,7 +144,7 @@ span.terminal-error {
   color: white;
 }
 
-#buttonStop {
+#buttonKill {
   background-color: hsla(0,75%,35%,1.00);
   color: white;
 }

@@ -38,7 +38,7 @@
         <main class="col-md-9">
           <div class="card mb-3" id="console">
             <div class="card-header console">
-              <h5>Console</h5>
+              <h5 class="d-flex justify-content-between">Console<span class="console-status"><div class="circle" id="console-status-point"></div><span id="console-status-text">STATUS</span></span></h5>
             </div>
             <div class="card-body terminal" id="terminal-logs">
 <span class="terminal-info">[INFO] This is some information</span>
@@ -54,7 +54,7 @@
               <button type="button" class="btn btn-ctrl-btn" id="buttonRestart">restart</button>
             </div>
             <div class="col-md-3 btn-ctrl">
-              <button type="button" class="btn btn-ctrl-btn" id="buttonStop">kill</button>
+              <button type="button" class="btn btn-ctrl-btn" id="buttonKill">kill</button>
             </div>
           </div>
         </main>
@@ -86,6 +86,7 @@
         </div>
       </div>
     </div>
+
     <script
 			  src="https://code.jquery.com/jquery-3.4.1.min.js"
 			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -94,5 +95,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="script.js"></script>
+    <footer>
+      <div class="container">DockerPanel | <a href="https://github.com/derkades">Derkades</a> &amp; <a href="https://github.com/baymoe">Bailey</a>  </div>
+    </footer>
   </body>
 </html>
