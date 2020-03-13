@@ -1,0 +1,20 @@
+:root {
+  --main-bg-color: white;
+}
+
+html, body {
+  background-color: var(--main-bg-color);
+}
+
+#content {
+  height: 100%;
+}
+
+#navColumn {
+  margin-bottom: 20px;
+}
+
+#console {
+  background-color: var(--console-bg-color);
+  color: var(--console-text-color);
+}

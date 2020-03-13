@@ -1,49 +1,73 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <style>
-            .container {
-                margin-top: 50px;
-            }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DockerPanel</title>
 
-            .console {
-                height: 400px;
-                /* width: 400px; */
-                background-color: #171717;
-            }
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <script>
+      window.onload = function windowLoad(event) {
+        document.getElementById("body").style.setProperty("--main-bg-color", "black");
+      }
+    </script>
+    
+  </head>
+  <body id="body">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">DockerPanel</a>
+    </nav>
 
-            .h1 {
-                font-size: .5em;
-            }
+  <div class="container" id="content">
+    <br>
+    <div class="row" id=>
+        <div class="col-md-3" id="navColumn">
+          <div class="accordion" id="ContainerSpoiler">
+            <div class="card">
+              <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                  <button class="btn" type="button" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler">
+                    Containers
+                  </button>
+                </h2>
+              </div>
 
-            .row div {
-                border: 1px solid gray;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    <ul class="nav nav-pills flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Proxy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Lorem</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Ipsum</a>
-                        </li>
-                    </ul>
+              <div id="collapseContainerSpoiler" class="collapse show" aria-labelledby="headingOne" data-parent="#ContainerSpoiler">
+                <div class="list-group">
+                  <button type="button" class="list-group-item list-group-item-action active">
+                    Cras justo odio
+                  </button>
+                  <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
+                  <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
+                  <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
+                  <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
                 </div>
-                <div class="col">
-                    <h1>Proxy</h1>
-                    <div class="console">
-
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </body>
+        <div class="col-md-9" id="console">
+          <div class="card text-white bg-dark mb-3 h-100">
+            <div class="card-header">Console</div>
+            <div class="card-body">
+              
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+    <script src="js/jquery-3.4.1.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed --> 
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap-4.4.1.js"></script>
+  </body>
 </html>
