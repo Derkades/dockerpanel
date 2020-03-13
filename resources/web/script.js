@@ -4,7 +4,10 @@ $(document).ready(function() {
         $.each(data, function(id, name) {
             text += '<button type="button" class="list-group-item list-group-item-action" ';
             text += 'id="nav-container-' + id + '" ';
-            text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name + '</button>\n'
+            text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
+            text += '<div class="circle" ';
+            text += 'id="nav-container-' + id + '-button"></div>';
+            text += '</button>\n'
         });
         $('#collapseContainerSpoiler > .list-group').html(text);
     });
