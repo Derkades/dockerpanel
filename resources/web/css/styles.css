@@ -1,5 +1,7 @@
 :root {
   --main-bg-color: white;
+  --console-bg-color: hsla(0,0%,10%,1.00);
+  --console-text-color: hsla(0,0%,90%,1.00);
 }
 
 html, body {
@@ -16,6 +18,10 @@ html, body {
 
 #console {
   background-color: var(--console-bg-color);
+  color: var(--console-text-color);
+}
+
+.console-text {
   color: var(--console-text-color);
 }
 

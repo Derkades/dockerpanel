@@ -5,48 +5,42 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DockerPanel</title>
-
+    
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body id="body">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="#">DockerPanel</a>
       </div>
-    </nav>
-
+    </header>
     <div class="container" id="content">
       <br>
       <div class="row" id="panel">
-        <div class="col-md-3" id="navColumn">
+        <nav class="col-md-3" id="navColumn">
           <div class="accordion" id="ContainerSpoiler">
             <div class="card">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
-                  <button class="btn" type="button" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler">
-                    Containers
-                  </button>
+                  <button class="btn" type="button" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h4>Containers</h4></button>
                 </h2>
               </div>
-
               <div id="collapseContainerSpoiler" class="collapse show" aria-labelledby="headingOne" data-parent="#ContainerSpoiler">
                 <div class="list-group">
-                  <button type="button" class="list-group-item list-group-item-action active">
-                    Cras justo odio
-                  </button>
                   <button type="button" class="list-group-item list-group-item-action">Loading..</button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-9" id="activeContainer">
-          <div class="card text-white bg-dark mb-3 h-100" id="console">
-            <div class="card-header">Console</div>
-            <div class="card-body" id="consoleViewPort">
-              
+        </nav>
+        <main class="col-md-9" id="main">
+          <div class="card mb-3" id="console">
+            <div class="card-header console-text">
+              <h4>Console</h4>
+            </div>
+            <div class="card-body console-text" id="consoleViewPort">
             </div>
           </div>
           <div class="d-flex justify-content-center">
@@ -60,21 +54,42 @@
               <button type="button" class="btn btn-ctrl-btn" id="buttonStop">stop</button>
             </div>
           </div>
-          
+        </main>
+        <div class="col-md-9" id="information" style="display:none">
+          <div class="card mb-3 h-100" id="gettingStarted">
+            <div class="card-header">
+              Getting Started
+            </div>
+            <div class="card-body" id="gettingStartedText">
+              <h4>DockerPanel</h4>
+              <p>DockerPanel is a simple WebUI that allows a user to manage all existing docker containers in an instance of docker.</p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum commodo pretium. Vivamus sed egestas purus. 
+                Sed ut purus elementum, auctor magna at, congue lectus. Nullam vel dui non diam convallis hendrerit. 
+                Donec sagittis dolor id odio euismod rutrum. Mauris elementum aliquam lorem, sed euismod nibh pharetra sit amet. 
+                Sed malesuada placerat tellus sed egestas. Donec luctus dignissim nulla, at egestas quam efficitur quis. 
+                Etiam et libero ultricies, fringilla erat sed, malesuada nibh. Nulla imperdiet commodo nisl sit amet tristique. </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum commodo pretium. Vivamus sed egestas purus. 
+                Sed ut purus elementum, auctor magna at, congue lectus. Nullam vel dui non diam convallis hendrerit. 
+                Donec sagittis dolor id odio euismod rutrum. Mauris elementum aliquam lorem, sed euismod nibh pharetra sit amet. 
+                Sed malesuada placerat tellus sed egestas. Donec luctus dignissim nulla, at egestas quam efficitur quis. 
+                Etiam et libero ultricies, fringilla erat sed, malesuada nibh. Nulla imperdiet commodo nisl sit amet tristique. </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum commodo pretium. Vivamus sed egestas purus. 
+                Sed ut purus elementum, auctor magna at, congue lectus. Nullam vel dui non diam convallis hendrerit. 
+                Donec sagittis dolor id odio euismod rutrum. Mauris elementum aliquam lorem, sed euismod nibh pharetra sit amet. 
+                Sed malesuada placerat tellus sed egestas. Donec luctus dignissim nulla, at egestas quam efficitur quis. 
+                Etiam et libero ultricies, fringilla erat sed, malesuada nibh. Nulla imperdiet commodo nisl sit amet tristique. </p>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
-    <br/>
-    <br/>
-
     <script
 			  src="https://code.jquery.com/jquery-3.4.1.min.js"
 			  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-			  crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+			  crossorigin="anonymous"></script> 
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --> 
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> 
     <script src="script.js"></script>
   </body>
 </html>
