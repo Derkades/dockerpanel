@@ -18,3 +18,34 @@ html, body {
   background-color: var(--console-bg-color);
   color: var(--console-text-color);
 }
+
+.btn-ctrl {
+  padding: 0px;
+  text-align: center;
+}
+
+.btn-ctrl-btn {
+  width: 100px;
+  background-color: rgba(51,51,51,1.00);
+  color: rgba(201,201,201,1.00);
+}
+
+.btn-ctrl-btn:hover {
+  color: rgba(201,201,201,1.00);
+  background-color: rgba(30,30,30,1.00);
+}
+
+#buttonStart {
+  background-color: hsla(102,75%,35%,1.00);
+  color: white;
+}
+
+#buttonRestart {
+  background-color: hsla(39,75%,50%,1.00);
+  color: white;
+}
+
+#buttonStop {
+  background-color: hsla(0,75%,35%,1.00);
+  color: white;
+}

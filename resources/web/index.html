@@ -9,22 +9,17 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
-    
-    <script>
-      window.onload = function windowLoad(event) {
-        document.getElementById("body").style.setProperty("--main-bg-color", "black");
-      }
-    </script>
-    
   </head>
   <body id="body">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">DockerPanel</a>
+      <div class="container">
+        <a class="navbar-brand" href="#">DockerPanel</a>
+      </div>
     </nav>
 
-  <div class="container" id="content">
-    <br>
-    <div class="row" id=>
+    <div class="container" id="content">
+      <br>
+      <div class="row" id="panel">
         <div class="col-md-3" id="navColumn">
           <div class="accordion" id="ContainerSpoiler">
             <div class="card">
@@ -50,19 +45,29 @@
             </div>
           </div>
         </div>
-        <div class="col-md-9" id="console">
-          <div class="card text-white bg-dark mb-3 h-100">
+        <div class="col-md-9" id="activeContainer">
+          <div class="card text-white bg-dark mb-3 h-100" id="console">
             <div class="card-header">Console</div>
-            <div class="card-body">
+            <div class="card-body" id="consoleViewPort">
               
             </div>
           </div>
+          <div class="d-flex justify-content-center">
+            <div class="col-md-2 btn-ctrl">
+              <button type="button" class="btn btn-ctrl-btn" id="buttonStart">start</button>
+            </div>
+            <div class="col-md-2 btn-ctrl">
+              <button type="button" class="btn btn-ctrl-btn" id="buttonRestart">restart</button>
+            </div>
+            <div class="col-md-2 btn-ctrl">
+              <button type="button" class="btn btn-ctrl-btn" id="buttonStop">stop</button>
+            </div>
+          </div>
+          
         </div>
         
       </div>
     </div>
-    <br/>
-    <br/>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
     <script src="js/jquery-3.4.1.min.js"></script>
 
