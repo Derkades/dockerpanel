@@ -13,6 +13,7 @@ $(document).ready(function() {
     });
 
     $('.navbar-brand').click(function() {
+        $('.list-group button').removeClass("active");
         $('main').css('display', 'none');
         $('#information').css('display', 'initial');
         window.selectedContainerId = undefined;
@@ -43,22 +44,46 @@ $(document).ready(function() {
 });
 
 function loadConsoleText() {
+    console.log("test0");
     if (window.selectedContainerId) {
-        console.log($('#terminal-logs').text());
-        var scroll = $('#terminal-logs').text() == "Loading..";
         $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-            if (scroll) {
+            if (window.containerScroll) {
                 $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
+                window.containerScroll = false;
             }
+
+            console.log("test1");
+
+            var params = {
+                id: window.selectedContainerId
+            };
+
+            console.log("test12");
+
+            $.get('/api/get_container_status', params, function(data) {
+                console.log("test2");
+                var response = data.responseText;
+                console.log("response");
+                if (response == "running\n") {
+                    console.log("yes");
+                    $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
+                } else {
+                    $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
+                }
+
+                setTimeout(loadConsoleText, 300);
+            });
         });
     } else {
-        $('#terminal-logs').text('Loading..');
+        $('#terminal-logs').text('');
         setTimeout(loadConsoleText, 100);
     }
 }
 
 function setSelectedContainer(id, name) {
+    window.containerScroll = true;
     window.selectedContainerId = id;
+    $('.list-group button').removeClass("active");
     $('#nav-container-' + id).addClass("active");
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
