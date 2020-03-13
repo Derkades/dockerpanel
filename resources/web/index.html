@@ -24,7 +24,7 @@
             <div class="card">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
-                  <button class="btn" type="button" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h4>Containers</h4></button>
+                  <a class="nav-header" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h5>Containers</h5></a>
                 </h2>
               </div>
               <div id="collapseContainerSpoiler" class="collapse show" aria-labelledby="headingOne" data-parent="#ContainerSpoiler">
@@ -35,32 +35,31 @@
             </div>
           </div>
         </nav>
-        <main class="col-md-9" id="main" style="display: none">
+        <main class="col-md-9">
           <div class="card mb-3" id="console">
-            <div class="card-header console-text">
-              <h4>Console</h4>
-            </div>
-            <div class="card-body console-text" id="consoleViewPort">
-            </div>
+            <div class="card-header console">
+              <h5>Console</h5>
+            </div><div class="card-body terminal" id="terminal-logs">text xd</div>
+            <div class="card-body terminal" id="terminal-input"><span id="terminal-container-name">container</span>:~/$ <input type="text" class="terminal" id="terminal-input-form" placeholder=""></div>
           </div>
           <div class="d-flex justify-content-center">
-            <div class="col-md-2 btn-ctrl">
+            <div class="col-md-3 btn-ctrl">
               <button type="button" class="btn btn-ctrl-btn" id="buttonStart">start</button>
             </div>
-            <div class="col-md-2 btn-ctrl">
+            <div class="col-md-3 btn-ctrl">
               <button type="button" class="btn btn-ctrl-btn" id="buttonRestart">restart</button>
             </div>
-            <div class="col-md-2 btn-ctrl">
+            <div class="col-md-3 btn-ctrl">
               <button type="button" class="btn btn-ctrl-btn" id="buttonStop">stop</button>
             </div>
           </div>
         </main>
-        <div class="col-md-9" id="information">
-          <div class="card mb-3 h-100" id="gettingStarted">
+        <div class="col-md-9" id="information" style="display:none">
+          <div class="card mb-3 h-100">
             <div class="card-header">
               Getting Started
             </div>
-            <div class="card-body" id="gettingStartedText">
+            <div class="card-body" id="informationText">
               <h4>DockerPanel</h4>
               <p>DockerPanel is a simple WebUI that allows a user to manage all existing docker containers in an instance of docker.</p>
               <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vestibulum commodo pretium. Vivamus sed egestas purus.
