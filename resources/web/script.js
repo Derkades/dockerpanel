@@ -14,9 +14,9 @@ $(document).ready(function() {
 
 function loadConsoleText() {
     if (window.selectedContainerId) {
-        $('#consoleViewPort').load('/api/get_container_logs?id=' + window.selectedContainerId);
+        $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId);
     } else {
-        $('#consoleViewPort').text('Loading..');
+        $('#terminal-logs').text('Loading..');
         setTimeout(loadConsoleText, 500);
     }
 }
