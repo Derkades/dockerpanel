@@ -28,7 +28,7 @@ public class GetContainerStatus extends ApiMethod {
 		
 		InspectContainerResponse inspect = App.docker().inspectContainerCmd(id).exec();	
 		ContainerState state = inspect.getState();
-		response.getWriter().println(state.toString());
+		response.getWriter().println(state.getStatus());
 	}
 
 }
