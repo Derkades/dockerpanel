@@ -1,11 +1,11 @@
 :root {
-  --main-bg-color: white;
+  --main-bg-color: hsla(0,0%,90%,1.00);
   --header-bg-color: color: hsla(240,19%,14%,1.00);
   --console-bg-color: hsla(0,0%,10%,1.00);
   --console-text-color: hsla(0,0%,90%,1.00);
 }
 
-html {
+html, body {
   background-color: var(--main-bg-color);
 }
 
@@ -16,6 +16,28 @@ header {
 
 *:focus {
     outline: none;
+}
+
+.navbar {
+  background-color: hsla(0,0%,12%,1.00);
+  color: white;
+}
+
+.navbar-brand {
+  padding-left: 20px;
+  color: white;
+}
+
+span.terminal-warn {
+  color: hsla(39,75%,50%,1.00);
+}
+
+span.terminal-info {
+  color: hsla(0,0%,70%,1.00);
+}
+
+span.terminal-error {
+  color: hsla(0,75%,58%,1.00);
 }
 
 #content {
@@ -46,20 +68,23 @@ header {
 }
 
 .terminal {
-  white-space: pre;
+  white-space: pre-wrap;
   font-size: 0.8em;
   font-family: monospace;
   color: var(--console-text-color);
 }
 
 #terminal-logs {
-  height: 200%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 #terminal-input-form {
   width: 80%;
   background-color: hsla(0,0%,0%,0.00);
   border-color: hsla(0,0%,0%,0.00);
+  font-size: 1em;
 }
 
 .btn-ctrl {
