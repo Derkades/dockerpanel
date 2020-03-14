@@ -21,15 +21,15 @@
     <div class="container" id="content">
       <br>
       <div class="row" id="panel">
-        <nav class="col-md-3" id="navColumn">
-          <div class="accordion" id="ContainerSpoiler">
+        <nav class="col-md-3 nav-list" id="containerNav">
+          <div class="accordion" id="containerSpoiler">
             <div class="card">
               <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                   <a class="nav-header" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h5>Containers</h5></a>
                 </h2>
               </div>
-              <div id="collapseContainerSpoiler" class="collapse show" aria-labelledby="headingOne" data-parent="#ContainerSpoiler">
+              <div id="collapseContainerSpoiler" class="collapse show" aria-labelledby="headingOne" data-parent="#containerSpoiler">
                 <div class="list-group">
                   <button type="button" class="list-group-item list-group-item-action">Loading..</button>
                 </div>
@@ -38,26 +38,32 @@
           </div>
         </nav>
         <main class="col-md-9">
-          <div class="card mb-3" id="terminal">
-            <div class="card-header terminal">
+          <div class="card mb-3 terminal">
+            <div class="card-header terminal-element">
               <h5 class="d-flex justify-content-between">Terminal<span class="terminal-status"><div class="circle status-offline" id="active-status-indicator"></div></span></h5>
             </div>
-            <div class="card-body terminal" id="terminal-logs">
+            <div class="card-body terminal-element terminal-logs">
 <span class="terminal-info">[INFO] This is some information</span>
 <span class="terminal-warn">[WARN] This is a warning</span>
 <span class="terminal-error">[ERROR] This is an error!</span></div>
-            <div class="card-body terminal" id="terminal-input"><span id="terminal-container-name">container</span>:~/$ <input type="text" class="terminal" id="terminal-input-form" placeholder=""></div>
+            <div class="card-body terminal-element terminal-input d-flex justify-content-between">
+              <span><span id="terminal-container-name">container</span>:~/$ </span>
+              <div class="terminal-element terminal-input-field">
+                <input type="text" class="terminal-input-form" placeholder="">
+              </div>
+             <div class="terminal-element terminal-input-send"><i></i></div>
+            </div>
           </div>
           <input type="checkbox" id="freeze-terminal"> Freeze terminal
           <div class="d-flex justify-content-center">
-            <div class="col-md-3 btn-ctrl">
-              <button type="button" class="btn btn-ctrl-btn" id="buttonStart">start</button>
+            <div class="col-md-3 button-control">
+              <button type="button" class="btn button-control" id="buttonStart">start</button>
             </div>
-            <div class="col-md-3 btn-ctrl">
-              <button type="button" class="btn btn-ctrl-btn" id="buttonRestart">restart</button>
+            <div class="col-md-3 button-control">
+              <button type="button" class="btn button-control" id="buttonRestart">restart</button>
             </div>
-            <div class="col-md-3 btn-ctrl">
-              <button type="button" class="btn btn-ctrl-btn" id="buttonKill">kill</button>
+            <div class="col-md-3 button-control">
+              <button type="button" class="btn button-control" id="buttonKill">kill</button>
             </div>
           </div>
         </main>
