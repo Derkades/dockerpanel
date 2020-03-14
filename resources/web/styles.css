@@ -109,7 +109,7 @@ footer {
 }
 
 *:focus {
-    outline: none;
+  outline: none;
 }
 
 .navbar-brand {
@@ -173,6 +173,6 @@ span.terminal-status {
 }
 
 .btn-ctrl-btn:hover {
-  color: rgba(201,201,201,1.00);  
+  color: rgba(201,201,201,1.00);
   background-color: rgba(30,30,30,1.00);
 }
