@@ -34,6 +34,7 @@ $(document).ready(function() {
         $.get('/api/start_container', params, function(text) {
             if (text == "ok") {
                 toastr.success("Container started");
+                loadConsoleText();
             } else if (text == "already started"){
                 toastr.warning("This container is already started");
             } else {
@@ -52,6 +53,7 @@ $(document).ready(function() {
         $.get('/api/stop_container', params, function(text) {
             if (text == "ok") {
                 toastr.success("Container stopped");
+                loadConsoleText();
             } else if (text == "already stopped"){
                 toastr.warning("This container is already stopped");
             } else {
@@ -85,6 +87,8 @@ $(document).ready(function() {
     //     }
     // });
 
+    setInterval(loadConsoleText, 2000)
+
     loadConsoleText();
 });
 
@@ -97,7 +101,7 @@ function loadConsoleText() {
         $.get('/api/get_container_status', params, function(text) {
             if (text == "running") {
                 if ($('#freeze-console').prop("checked")) {
-                    setTimeout(loadConsoleText, 200);
+                    // setTimeout(loadConsoleText, 200);
                 } else {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                     const out = document.getElementById("terminal-logs");
@@ -107,21 +111,21 @@ function loadConsoleText() {
                             $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
                             // window.containerScroll = false;
                         }
-                        setTimeout(loadConsoleText, 1000);
+                        // setTimeout(loadConsoleText, 1000);
                     });
                 }
             } else {
                 $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
                 // window.containerScroll = true;
                 $('#terminal-logs').text("offline");
-                setTimeout(loadConsoleText, 1000);
+                // setTimeout(loadConsoleText, 1000);
             }
         }, "text");
 
     } else {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
         $('#terminal-logs').text('');
-        setTimeout(loadConsoleText, 100);
+        // setTimeout(loadConsoleText, 100);
     }
 }
 
@@ -133,6 +137,7 @@ function setSelectedContainer(id, name) {
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
     $('#serverTitle').text(" - " + name);
+    loadConsoleText()
 }
 
 function sendConsoleCommand(command){
@@ -140,12 +145,15 @@ function sendConsoleCommand(command){
         id: window.selectedContainerId,
         command: command
     };
+
     $.get('/api/send_command', params, function(text) {
         if (text == "ok") {
             toastr.success("Command sent");
         } else {
             toastr.error("Error occured while sending command");
         }
+
+        setTimeout(loadConsoleText, 100)
     }, "text");
 }
 
