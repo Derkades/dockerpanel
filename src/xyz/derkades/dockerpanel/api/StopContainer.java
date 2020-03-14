@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.amihaiemil.docker.Container;
+import com.github.dockerjava.api.model.Container;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
@@ -17,25 +17,26 @@ public class StopContainer extends ApiMethod {
 	}
 
 	@Override
-	public void call(Map<String, String> parameters, HttpServletResponse response) throws Exception {
+	public void call(final Map<String, String> parameters, final HttpServletResponse response) throws Exception {
 		response.setContentType("text/plain");
-		
+
 		if (!parameters.containsKey("id")) {
 			response.getWriter().print("Mising parameter id");
 			return;
 		}
-		
-		String id = parameters.get("id");
-		Container container = App.container(id);
+
+		final String id = parameters.get("id");
+		final Container container = App.container(id);
 		if (container == null) {
 			response.getWriter().print("invalid id");
 			return;
 		}
-		
+
 		try {
-			container.stop();
+//			container.stop();
+			App.docker().stopContainerCmd(container.getId()).exec();
 			response.getWriter().print("ok");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			response.getWriter().print("error");
 		}
 	}

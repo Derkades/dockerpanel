@@ -2,7 +2,7 @@
 /* Theming */
 
   /* Main */
-html, body {
+body {
   background-color: var(--background-color);
   color: var(--text-color);
 }

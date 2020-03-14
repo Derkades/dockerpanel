@@ -1,14 +1,19 @@
 package xyz.derkades.dockerpanel.api;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.amihaiemil.docker.Container;
+import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.command.ExecCreateCmdResponse;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.api.model.Frame;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
+import xyz.derkades.dockerpanel.ThreadBlocker;
 
 public class GetContainerLogs extends ApiMethod {
 
@@ -17,31 +22,31 @@ public class GetContainerLogs extends ApiMethod {
 	}
 
 	@Override
-	public void call(Map<String, String> parameters, HttpServletResponse response) throws Exception {
+	public void call(final Map<String, String> parameters, final HttpServletResponse response) throws Exception {
 		response.setContentType("text/plain");
-		
+
 		if (!parameters.containsKey("id")) {
 			response.getWriter().println("Missing parameter id");
 			return;
 		}
-		
+
 		int tail;
-		
+
 		if (parameters.containsKey("tail")) {
 			tail = Integer.parseInt(parameters.get("tail"));
 		} else {
 			tail = 100;
 		}
-		
-		String id = parameters.get("id");
-		Container container = App.container(id);
+
+		final String id = parameters.get("id");
+		final Container container = App.container(id);
 		if (container == null) {
 			response.getWriter().print("invalid id");
 			return;
 		}
-		
-		response.getWriter().print(container.logs().fetch());
-		
+
+//		response.getWriter().print(container.logs().fetch());
+
 //		String[] command = { "tail", "-n", tail + "", "logs/latest.log" };
 //		ExecCreation execCreation = App.docker().execCreate(id, command);
 //		LogStream stream = App.docker().execStart(execCreation.id());
@@ -53,44 +58,44 @@ public class GetContainerLogs extends ApiMethod {
 //				e.printStackTrace();
 //			}
 //		});
-		
-//		ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
-//				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
-//		
-//		ThreadBlocker blocker = new ThreadBlocker();
-//		
-//		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
-//
-//			@Override
-//			public void close() throws IOException {}
-//
-//			@Override
-//			public void onStart(Closeable closeable) {}
-//
-//			@Override
-//			public void onNext(Frame object) {
-//				try {
-//					response.getWriter().println(new String(object.getPayload()).trim());
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			@Override
-//			public void onError(Throwable throwable) {
-//				throwable.printStackTrace();
-//			}
-//
-//			@Override
-//			public void onComplete() {
-//				blocker.done();
-//			}
-//			
-//		};
-//		
-//		App.docker().execStartCmd(cmd.getId()).exec(callback);
-		
-//		blocker.block();
+
+		final ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
+				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
+
+		final ThreadBlocker blocker = new ThreadBlocker();
+
+		final ResultCallback<Frame> callback = new ResultCallback<Frame>() {
+
+			@Override
+			public void close() throws IOException {}
+
+			@Override
+			public void onStart(final Closeable closeable) {}
+
+			@Override
+			public void onNext(final Frame object) {
+				try {
+					response.getWriter().println(new String(object.getPayload()).trim());
+				} catch (final IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onError(final Throwable throwable) {
+				throwable.printStackTrace();
+			}
+
+			@Override
+			public void onComplete() {
+				blocker.done();
+			}
+
+		};
+
+		App.docker().execStartCmd(cmd.getId()).exec(callback);
+
+		blocker.block();
 	}
 
 }
