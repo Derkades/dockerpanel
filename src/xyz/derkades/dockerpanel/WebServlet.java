@@ -15,29 +15,29 @@ public class WebServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7682997363243721686L;
 
-	private void callApiMethod(String methodName, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		for (ApiMethod method : ApiMethod.METHODS) {			
+	private void callApiMethod(final String methodName, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		for (final ApiMethod method : ApiMethod.METHODS) {
 			if (!method.getName().equals(methodName)) {
 				continue;
 			}
-		
-			Map<String, String> parameters = new HashMap<>();
-			
+
+			final Map<String, String> parameters = new HashMap<>();
+
 			request.getParameterNames().asIterator().forEachRemaining((key) -> {
 				parameters.put(key, request.getParameter(key));
 			});
-			
+
 			try {
 				method.call(parameters, response);
 				System.out.println("API: " + methodName);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				System.err.println("Error occured in API request");
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				e.printStackTrace();
 			}
 			return;
 		}
-		
+
 		System.err.println("API method not found: " + methodName);
 		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		response.getWriter().write("Invalid API method");
@@ -46,13 +46,13 @@ public class WebServlet extends HttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 		System.out.println("GET " + request.getRequestURI());
-		
+
 		String uri = request.getRequestURI();
 		if (uri.contains("..")) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		
+
 		if (uri.startsWith("/api")) {
 			callApiMethod(uri.substring(5), request, response);
 		} else if (uri.equals("/theme.css")) {
@@ -65,7 +65,7 @@ public class WebServlet extends HttpServlet {
 			if (uri.endsWith("/")) {
 				uri += "index.html";
 			}
-				
+
 			// Try to serve static file
 			try (InputStream stream = App.class.getResourceAsStream("/web" + uri)){
 				if (stream == null) {
@@ -73,17 +73,19 @@ public class WebServlet extends HttpServlet {
 					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					return;
 				}
-				
+
 				IOUtils.copy(stream, response.getOutputStream());
 				response.setStatus(HttpServletResponse.SC_OK);
 			}
-			
+
 			if (uri.endsWith(".js")) {
 				response.setContentType("application/javascript");
 			} else if (uri.endsWith(".html")){
 				response.setContentType("text/html");
 			} else if (uri.endsWith(".css")){
 				response.setContentType("text/css");
+			} else if (uri.endsWith(".svg")) {
+				response.setContentType("image/svg+xml");
 			}
 		}
 	}
