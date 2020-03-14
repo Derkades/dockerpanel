@@ -85,13 +85,27 @@ function loadNav() {
     $.get('/api/get_containers', function(data) {
         var text = "";
         $.each(data, function(id, name) {
+            previousStatusClass = $('#nav-container-' + id + '-status').hasClass('status-online') ? "status-online" : "status-offline";
             text += '<button type="button" class="list-group-item list-group-item-action" ';
             text += 'id="nav-container-' + id + '" ';
             text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
-            text += '<span style="float: right;"><div class="circle" ';
-            text += 'id="nav-container-' + id + '-button"></div></span>';
+            text += '<span style="float: right;"><div class="circle ' + previousStatusClass + '" ';
+            text += 'id="nav-container-' + id + '-status"></div></span>';
             text += '</button>\n'
+
+            var params = {
+                id: id
+            };
+            // Load status afterwards, async
+            $.get('/api/get_container_status', params, function(text) {
+                if (text == "running") {
+                    $("#nav-container-" + id + "-status").removeClass('status-offline').addClass('status-online');
+                } else {
+                    $("#nav-container-" + id + "-status").removeClass('status-online').addClass('status-offline');
+                }
+            });
         });
+
         $('#collapseContainerSpoiler > .list-group').html(text);
         setNavActive();
     }, "json");
