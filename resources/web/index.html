@@ -9,13 +9,13 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-    <link rel="stylesheet" href="/theme.css">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body id="body">
-    <header class="navbar navbar-expand">
+    <header id="header">
       <div class="container">
-        <a class="navbar-brand" href="#">DockerPanel<span id="serverTitle"></span></a>
+        <a class="navbar-brand" id="brand" href="#">DockerPanel<span id="serverTitle"></span></a>
       </div>
     </header>
     <div class="container" id="content">
@@ -38,9 +38,9 @@
           </div>
         </nav>
         <main class="col-md-9">
-          <div class="card mb-3" id="console">
-            <div class="card-header console">
-              <h5 class="d-flex justify-content-between">Console<span class="console-status"><div class="circle status-offline" id="active-status-indicator"></div><span id="active-status-text"></span></span></h5>
+          <div class="card mb-3" id="terminal">
+            <div class="card-header terminal">
+              <h5 class="d-flex justify-content-between">Terminal<span class="terminal-status"><div class="circle status-offline" id="active-status-indicator"></div></span></h5>
             </div>
             <div class="card-body terminal" id="terminal-logs">
 <span class="terminal-info">[INFO] This is some information</span>
@@ -48,7 +48,7 @@
 <span class="terminal-error">[ERROR] This is an error!</span></div>
             <div class="card-body terminal" id="terminal-input"><span id="terminal-container-name">container</span>:~/$ <input type="text" class="terminal" id="terminal-input-form" placeholder=""></div>
           </div>
-          <input type="checkbox" id="freeze-console"> Freeze console
+          <input type="checkbox" id="freeze-terminal"> Freeze terminal
           <div class="d-flex justify-content-center">
             <div class="col-md-3 btn-ctrl">
               <button type="button" class="btn btn-ctrl-btn" id="buttonStart">start</button>
