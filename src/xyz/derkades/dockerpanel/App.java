@@ -3,27 +3,26 @@ package xyz.derkades.dockerpanel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.model.Container;
-import com.github.dockerjava.api.model.Info;
-import com.github.dockerjava.core.DockerClientBuilder;
 import com.google.gson.Gson;
+import com.spotify.docker.client.DefaultDockerClient;
+import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.exceptions.DockerException;
+import com.spotify.docker.client.messages.Container;
 
 public class App {
 	
 	private static WebServer server;
-//	private static List<String> containers;
 	private static DockerClient docker;
-	public static List<String> allDockerStatuses = Arrays.asList("created", "restarting", "running", "paused", "exited");
 	private static String theme;
 	
-	public static void main(String[] args) throws IOException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void main(String[] args) throws IOException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DockerException, InterruptedException {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Starting.. ");
 		
@@ -38,51 +37,17 @@ public class App {
 				System.out.println("bye!");
 			}
 		});
-
-//		File containersFile = new File("containers.txt");
-//		if (containersFile.exists()) {
-//			containers = FileUtils.readLines(containersFile, "UTF-8");
-//		} else {
-//			containersFile.createNewFile();
-//			System.err.println("No containers configured");
-//			System.exit(1);
-//			return;
-//		}
 		
-//		if ()
-		
-//		Constructor<NettyDockerCmdExecFactory> constructor = NettyDockerCmdExecFactory.class.getConstructor();
-//		constructor.setAccessible(true);
-//		NettyDockerCmdExecFactory factory = constructor.newInstance();
-//		factory.init(DefaultDockerClientConfig.createDefaultConfigBuilder().build());
-//		
-//		docker = DockerClientImpl.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder().build())
-//				.withDockerCmdExecFactory(factory);
-		docker = DockerClientBuilder.getInstance().build();
-		Info info = docker.infoCmd().exec();
-		System.out.println("Connected to Docker version " + info.getServerVersion());
+		docker = new DefaultDockerClient(URI.create("unix:///var/run/docker.sock"));
+		System.out.println("Connected to docker version " + docker.version().version());
 		
 		server = new WebServer();
 		server.start();
 		
-//		System.out.println("\nAll containers: ");
-//		for (Container container : docker.listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
-//			if (container.getNames().length >= 1) {
-//				System.out.println(" - " + container.getNames()[0].substring(1));
-//			} else {
-//				System.out.println(" - ???");
-//			}
-//		}
-//		
-//		System.out.println("\nWhitelisted containers:");
-//		for (String containerName : containers) {
-//			Container container = getContainerByName(containerName);
-//			if (container != null) {
-//				System.out.println(" - " + containerName);
-//			} else {
-//				System.out.println(" - " + containerName + " (UNAVAILABLE)");
-//			}
-//		}
+		System.out.println("\nContainers: ");
+		for (Container container : App.getContainers()) {
+			System.out.println(container.names().get(0).substring(1));
+		}
 		
 		System.out.println();
 		
@@ -99,21 +64,21 @@ public class App {
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
 	}
 	
-	public static List<Container> getContainers() {
+	public static List<Container> getContainers() throws DockerException, InterruptedException {
 		String whitelist = System.getenv("CONTAINER_WHITELIST");
 		if (whitelist == null) {
-			return docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec();
+			return docker().listContainers();
 		} else {
-			return docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec()
+			return docker().listContainers()
 					.stream()
-					.filter((c) -> Arrays.binarySearch(whitelist.split(""), c.getNames()[0].substring(1)) >= 0)
+					.filter((c) -> Arrays.binarySearch(whitelist.split(""), c.names().get(0).substring(1)) >= 0)
 					.collect(Collectors.toList());
 		}
 	}
 	
-	public static Container getContainerByName(String containerName) {
+	public static Container getContainerByName(String containerName) throws DockerException, InterruptedException {
 		for (Container container : getContainers()) {
-			for (String name : container.getNames()) {
+			for (String name : container.names()) {
 				if (name.substring(1).equals(containerName)) {
 					return container;
 				}
@@ -121,19 +86,6 @@ public class App {
 		}
 		return null;
 	}
-	
-//	public static boolean isValidContainer(String containerName) {
-//		return containers.contains(containerName);
-//	}
-//	
-//	public static boolean isValidContainer(Container container) {
-//		for (String s : container.getNames()) {
-//			if (containers.contains(s.substring(1))) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
 	
 	public static DockerClient docker() {
 		return docker;

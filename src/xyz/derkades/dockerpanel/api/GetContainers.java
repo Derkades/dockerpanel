@@ -22,7 +22,8 @@ public class GetContainers extends ApiMethod {
 //				.filter(App::isValidContainer)
 //				.forEach((container) -> output.put(container.getId(), container.getNames()[0].substring(1)));
 		
-		App.getContainers().forEach((c) -> output.put(c.getId(), c.getNames()[0].substring(1)));
+//		App.getContainers().forEach((c) -> output.put(c.getId(), c.getNames()[0].substring(1)));
+		App.getContainers().forEach((c) -> output.put(c.id(), c.names().get(0).substring(1)));
 		
 		App.writeJson(response, output);
 	}

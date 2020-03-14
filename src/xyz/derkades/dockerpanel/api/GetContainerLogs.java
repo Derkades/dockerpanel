@@ -1,18 +1,15 @@
 package xyz.derkades.dockerpanel.api;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.command.ExecCreateCmdResponse;
-import com.github.dockerjava.api.model.Frame;
+import com.spotify.docker.client.LogStream;
+import com.spotify.docker.client.messages.ExecCreation;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.ThreadBlocker;
 
 public class GetContainerLogs extends ApiMethod {
 
@@ -39,50 +36,55 @@ public class GetContainerLogs extends ApiMethod {
 			tail = 100;
 		}
 		
-//		Process process = new ProcessBuilder()
-//				.command("docker", "exec", id, "tail", "-n", tail + "", "logs/latest.log"))
-//				.start();
-		;
+		String[] command = { "tail", "-n", tail + "", "logs/latest.log" };
+		ExecCreation execCreation = App.docker().execCreate(id, command);
+		LogStream stream = App.docker().execStart(execCreation.id());
+		response.getWriter().print(stream.readFully());
+//		stream.forEachRemaining((message) -> {
+//			try {
+//				response.getWriter().println(new String(message.content().array()).trim());
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		});
 		
-//		response.getWriter().print(IOUtils.toString(process.getInputStream(), "UTF-8"));
+//		ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
+//				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
+//		
+//		ThreadBlocker blocker = new ThreadBlocker();
+//		
+//		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
+//
+//			@Override
+//			public void close() throws IOException {}
+//
+//			@Override
+//			public void onStart(Closeable closeable) {}
+//
+//			@Override
+//			public void onNext(Frame object) {
+//				try {
+//					response.getWriter().println(new String(object.getPayload()).trim());
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//
+//			@Override
+//			public void onError(Throwable throwable) {
+//				throwable.printStackTrace();
+//			}
+//
+//			@Override
+//			public void onComplete() {
+//				blocker.done();
+//			}
+//			
+//		};
+//		
+//		App.docker().execStartCmd(cmd.getId()).exec(callback);
 		
-		ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
-				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
-		
-		ThreadBlocker blocker = new ThreadBlocker();
-		
-		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
-
-			@Override
-			public void close() throws IOException {}
-
-			@Override
-			public void onStart(Closeable closeable) {}
-
-			@Override
-			public void onNext(Frame object) {
-				try {
-					response.getWriter().println(new String(object.getPayload()).trim());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void onError(Throwable throwable) {
-				throwable.printStackTrace();
-			}
-
-			@Override
-			public void onComplete() {
-				blocker.done();
-			}
-			
-		};
-		
-		App.docker().execStartCmd(cmd.getId()).exec(callback);
-		
-		blocker.block();
+//		blocker.block();
 	}
 
 }

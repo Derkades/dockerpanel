@@ -4,9 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.command.InspectContainerResponse.ContainerState;
-
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
 
@@ -27,9 +24,11 @@ public class GetContainerStatus extends ApiMethod {
 		
 		String id = parameters.get("id");
 		
-		InspectContainerResponse inspect = App.docker().inspectContainerCmd(id).exec();	
-		ContainerState state = inspect.getState();
-		response.getWriter().print(state.getStatus());
+//		InspectContainerResponse inspect = App.docker().inspectContainerCmd(id).exec();	
+//		ContainerState state = inspect.getState();
+//		response.getWriter().print(state.getStatus());
+		
+		response.getWriter().print(App.docker().inspectContainer(id).state().status());
 	}
 
 }

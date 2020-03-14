@@ -27,46 +27,6 @@ public class SendCommand extends ApiMethod {
 			return;
 		}
 		
-//		ThreadBlocker blocker = new ThreadBlocker();
-//		
-//		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
-//
-//			@Override
-//			public void close() throws IOException {
-//				System.out.println("CLOSE");
-//			}
-//
-//			@Override
-//			public void onStart(Closeable closeable) {
-//				System.out.println("START");
-//			}
-//
-//			@Override
-//			public void onNext(Frame object) {
-//				System.out.println(object.toString());
-//			}
-//
-//			@Override
-//			public void onError(Throwable throwable) {
-//				throwable.printStackTrace();
-//			}
-//
-//			@Override
-//			public void onComplete() {
-//				System.out.println("STOP");
-//				blocker.done();
-//			}
-//
-//		};
-//		
-//		InputStream stream = new ByteArrayInputStream(parameters.get("command").getBytes());
-//		
-//		App.docker().attachContainerCmd(parameters.get("id"))
-//		.withStdIn(stream).withStdErr(true).withStdOut(true).withFollowStream(false)
-//		.exec(callback);
-//		
-//		blocker.block();
-		
 		String id = parameters.get("id");
 		String command = parameters.get("command");
 

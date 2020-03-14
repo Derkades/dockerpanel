@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.dockerjava.api.exception.NotModifiedException;
-
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
 
@@ -25,14 +23,8 @@ public class StartContainer extends ApiMethod {
 		}
 		
 		String id = parameters.get("id");
-		
-		try {
-			App.docker().startContainerCmd(id).exec();
-			response.getWriter().print("ok");
-		} catch (NotModifiedException e) {
-			response.getWriter().print("already started");
-		}
-		
+		App.docker().startContainer(id);
+		response.getWriter().print("ok");
 	}
 
 
