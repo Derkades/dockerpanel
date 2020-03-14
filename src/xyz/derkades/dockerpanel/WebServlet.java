@@ -16,11 +16,7 @@ public class WebServlet extends HttpServlet {
 	private static final long serialVersionUID = -7682997363243721686L;
 
 	private void callApiMethod(String methodName, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		for (ApiMethod method : ApiMethod.METHODS) {
-//			if (method.getType() != requestType) {
-//				continue;
-//			}
-			
+		for (ApiMethod method : ApiMethod.METHODS) {			
 			if (!method.getName().equals(methodName)) {
 				continue;
 			}
@@ -46,21 +42,6 @@ public class WebServlet extends HttpServlet {
 		response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		response.getWriter().write("Invalid API method");
 	}
-	
-//	@Override
-//	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-//		String uri = request.getRequestURI();
-//		if (uri.contains("..")) {
-//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//			return;
-//		}
-//		
-//		if (uri.startsWith("/api")) {
-//			callApiMethod(uri.substring(5), RequestType.POST, request, response);
-//		} else {
-//			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//		}
-//	}
 
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {

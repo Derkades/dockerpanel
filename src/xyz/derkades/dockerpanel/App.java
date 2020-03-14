@@ -93,15 +93,6 @@ public class App {
 		}
 	}
 	
-	public static Container getContainerByName(String containerName) throws IOException {
-		for (Container container : getContainers()) {
-			if (containerName(container).substring(1).equals(containerName)) {
-				return container;
-			}
-		}
-		return null;
-	}
-	
 	public static String containerName(Container container) throws IOException {
 		return container.inspect().asJsonObject().getString("Name").substring(1);
 	}
@@ -119,12 +110,8 @@ public class App {
 		return docker;
 	}
 	
-	public static Gson gson() {
-		return new Gson(); // TODO persistent gson object
-	}
-	
 	public static String toJson(Object object) {
-		return gson().toJson(object);
+		return new Gson().toJson(object);
 	}
 	
 	public static void writeJson(HttpServletResponse response, Object object) throws IOException {

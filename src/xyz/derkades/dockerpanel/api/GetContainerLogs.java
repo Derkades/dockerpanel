@@ -1,6 +1,5 @@
 package xyz.derkades.dockerpanel.api;
 
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
