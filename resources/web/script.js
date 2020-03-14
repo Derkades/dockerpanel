@@ -3,19 +3,6 @@ $(document).ready(function() {
     toastr.options.newestOnTop = false;
     toastr.options.positionClass = "toast-bottom-right";
 
-    $.get('/api/get_containers', function(data) {
-        var text = "";
-        $.each(data, function(id, name) {
-            text += '<button type="button" class="list-group-item list-group-item-action" ';
-            text += 'id="nav-container-' + id + '" ';
-            text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
-            text += '<span style="float: right;"><div class="circle" ';
-            text += 'id="nav-container-' + id + '-button"></div></span>';
-            text += '</button>\n'
-        });
-        $('#collapseContainerSpoiler > .list-group').html(text);
-    });
-
     $('.navbar-brand').click(function() {
         $('.list-group button').removeClass("active");
         $('main').css('display', 'none');
@@ -87,10 +74,28 @@ $(document).ready(function() {
     //     }
     // });
 
-    setInterval(loadConsoleText, 2000)
-
+    setInterval(loadConsoleText, 2000);
     loadConsoleText();
+
+    setInterval(loadNav, 10000);
+    loadNav();
 });
+
+function loadNav() {
+    $.get('/api/get_containers', function(data) {
+        var text = "";
+        $.each(data, function(id, name) {
+            text += '<button type="button" class="list-group-item list-group-item-action" ';
+            text += 'id="nav-container-' + id + '" ';
+            text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
+            text += '<span style="float: right;"><div class="circle" ';
+            text += 'id="nav-container-' + id + '-button"></div></span>';
+            text += '</button>\n'
+        });
+        $('#collapseContainerSpoiler > .list-group').html(text);
+        setNavActive();
+    }, "json");
+}
 
 function loadConsoleText() {
     if (window.selectedContainerId) {
@@ -132,12 +137,18 @@ function loadConsoleText() {
 function setSelectedContainer(id, name) {
     // window.containerScroll = true;
     window.selectedContainerId = id;
-    $('.list-group button').removeClass("active");
-    $('#nav-container-' + id).addClass("active");
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
     $('#serverTitle').text(" - " + name);
-    loadConsoleText()
+    setNavActive();
+    loadConsoleText();
+}
+
+function setNavActive(){
+    $('.list-group button').removeClass("active");
+    if (window.selectedContainerId){
+        $('#nav-container-' + window.selectedContainerId).addClass("active");
+    }
 }
 
 function sendConsoleCommand(command){
