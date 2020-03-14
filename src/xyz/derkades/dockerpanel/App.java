@@ -3,7 +3,6 @@ package xyz.derkades.dockerpanel;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
@@ -15,9 +14,7 @@ import org.apache.commons.io.FileUtils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Info;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientImpl;
-import com.github.dockerjava.netty.NettyDockerCmdExecFactory;
+import com.github.dockerjava.core.DockerClientBuilder;
 import com.google.gson.Gson;
 
 public class App {
@@ -54,13 +51,14 @@ public class App {
 			return;
 		}
 		
-		Constructor<NettyDockerCmdExecFactory> constructor = NettyDockerCmdExecFactory.class.getConstructor();
-		constructor.setAccessible(true);
-		NettyDockerCmdExecFactory factory = constructor.newInstance();
-		factory.init(DefaultDockerClientConfig.createDefaultConfigBuilder().build());
-		
-		docker = DockerClientImpl.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder().build())
-				.withDockerCmdExecFactory(factory);
+//		Constructor<NettyDockerCmdExecFactory> constructor = NettyDockerCmdExecFactory.class.getConstructor();
+//		constructor.setAccessible(true);
+//		NettyDockerCmdExecFactory factory = constructor.newInstance();
+//		factory.init(DefaultDockerClientConfig.createDefaultConfigBuilder().build());
+//		
+//		docker = DockerClientImpl.getInstance(DefaultDockerClientConfig.createDefaultConfigBuilder().build())
+//				.withDockerCmdExecFactory(factory);
+		docker = DockerClientBuilder.getInstance().build();
 		Info info = docker.infoCmd().exec();
 		System.out.println("Connected to Docker version " + info.getServerVersion());
 		
