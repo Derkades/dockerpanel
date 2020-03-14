@@ -49,7 +49,7 @@ public class GetContainerLogs extends ApiMethod {
 			public void onNext(Frame object) {
 				try {
 					// substring to remove STDOUT: STDERR:				
-					response.getWriter().println(object.toString().substring(8));
+					response.getWriter().println(object.toString());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
