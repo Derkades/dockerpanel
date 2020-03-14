@@ -16,7 +16,7 @@ $(document).ready(function() {
             id: window.selectedContainerId
         };
 
-        toastr.info("Starting..");
+        toastr.info("Starting&mldr;");
 
         $.get('/api/start_container', params, function(text) {
             if (text == "ok") {
@@ -35,7 +35,7 @@ $(document).ready(function() {
             id: window.selectedContainerId
         };
 
-        toastr.info("Stopping..");
+        toastr.info("Stopping&mldr;");
 
         $.get('/api/stop_container', params, function(text) {
             if (text == "ok") {
