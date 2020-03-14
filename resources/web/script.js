@@ -119,37 +119,29 @@ function loadConsoleText() {
 
         $.get('/api/get_container_status', params, function(text) {
             if (text == "running") {
-                if ($('#freeze-console').prop("checked")) {
-                    // setTimeout(loadConsoleText, 200);
-                } else {
+                if (!$('#freeze-console').prop("checked")) {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                     const out = document.getElementsByClassName("terminal-logs")[0];
                     const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
                     $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
                         if (isScrolledToBottom) {
                             $('.terminal-logs').scrollTop($('.terminal-logs')[0].scrollHeight);
-                            // window.containerScroll = false;
                         }
-                        // setTimeout(loadConsoleText, 1000);
                     });
                 }
             } else {
                 $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-                // window.containerScroll = true;
                 $('.terminal-logs').text("offline");
-                // setTimeout(loadConsoleText, 1000);
             }
         }, "text");
 
     } else {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
         $('.terminal-logs').text('');
-        // setTimeout(loadConsoleText, 100);
     }
 }
 
 function setSelectedContainer(id, name) {
-    // window.containerScroll = true;
     window.selectedContainerId = id;
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
