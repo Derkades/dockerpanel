@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +15,11 @@ public class WebServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -7682997363243721686L;
 
-	private void callApiMethod(String methodName, RequestType requestType, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void callApiMethod(String methodName, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		for (ApiMethod method : ApiMethod.METHODS) {
-			if (method.getType() != requestType) {
-				continue;
-			}
+//			if (method.getType() != requestType) {
+//				continue;
+//			}
 			
 			if (!method.getName().equals(methodName)) {
 				continue;
@@ -34,7 +33,7 @@ public class WebServlet extends HttpServlet {
 			
 			try {
 				method.call(parameters, response);
-				System.out.println("API: " + requestType + " " + methodName);
+				System.out.println("API: " + methodName);
 			} catch (Exception e) {
 				System.err.println("Error occured in API request");
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -48,20 +47,20 @@ public class WebServlet extends HttpServlet {
 		response.getWriter().write("Invalid API method");
 	}
 	
-	@Override
-	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-		String uri = request.getRequestURI();
-		if (uri.contains("..")) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-		
-		if (uri.startsWith("/api")) {
-			callApiMethod(uri.substring(5), RequestType.POST, request, response);
-		} else {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
+//	@Override
+//	protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+//		String uri = request.getRequestURI();
+//		if (uri.contains("..")) {
+//			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//			return;
+//		}
+//		
+//		if (uri.startsWith("/api")) {
+//			callApiMethod(uri.substring(5), RequestType.POST, request, response);
+//		} else {
+//			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+//		}
+//	}
 
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
@@ -72,8 +71,8 @@ public class WebServlet extends HttpServlet {
 		}
 		
 		if (uri.startsWith("/api")) {
-			response.setContentType("text/json");
-			callApiMethod(uri.substring(5), RequestType.GET, request, response);
+//			response.setContentType("text/json");
+			callApiMethod(uri.substring(5), request, response);
 		} else {
 			if (uri.endsWith("/")) {
 				uri += "index.html";

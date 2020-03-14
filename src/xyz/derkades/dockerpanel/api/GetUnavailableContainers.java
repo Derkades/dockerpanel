@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.RequestType;
 
 public class GetUnavailableContainers extends ApiMethod {
 	
 	public GetUnavailableContainers() {
-		super("get_unavailable_containers", RequestType.GET);
+		super("get_unavailable_containers");
 	}
 
 	@Override

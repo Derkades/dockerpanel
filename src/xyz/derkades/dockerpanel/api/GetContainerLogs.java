@@ -11,17 +11,18 @@ import com.github.dockerjava.api.model.Frame;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.RequestType;
 import xyz.derkades.dockerpanel.ThreadBlocker;
 
 public class GetContainerLogs extends ApiMethod {
 
 	public GetContainerLogs() {
-		super("get_container_logs", RequestType.GET);
+		super("get_container_logs");
 	}
 
 	@Override
 	public void call(Map<String, String> parameters, HttpServletResponse response) throws Exception {
+		response.setContentType("text/plain");
+		
 		if (!parameters.containsKey("id")) {
 			response.getWriter().println("Missing parameter id");
 			return;

@@ -7,12 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.RequestType;
 
 public class GetAvailableContainers extends ApiMethod {
 
 	public GetAvailableContainers() {
-		super("get_available_containers", RequestType.GET);
+		super("get_available_containers");
 	}
 	
 	@Override

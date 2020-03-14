@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $.get('/api/get_available_containers', function(data) {
+        // console.log("test");
         var text = "";
         $.each(data, function(id, name) {
             text += '<button type="button" class="list-group-item list-group-item-action" ';
@@ -25,9 +26,15 @@ $(document).ready(function() {
             id: window.selectedContainerId
         };
         alert('start..');
-        $.post('start_container', params, function(){
-            alert('done!');
-        });
+        $.get('/api/start_container', params, function(text) {
+            if (text == "ok") {
+                alert("success");
+            } else if (text == "already started"){
+                alert("already started");
+            } else {
+                alert("unknown error");
+            }
+        }, "text");
     });
 
     $('#buttonKill').click(function() {
@@ -35,16 +42,21 @@ $(document).ready(function() {
             id: window.selectedContainerId
         };
         alert('stop..');
-        $.post('stop_container', params, function(){
-            alert('done!');
-        });
+        $.get('/api/stop_container', params, function(text) {
+            if (text == "ok") {
+                alert("success");
+            } else if (text == "already stopped"){
+                alert("already stopped");
+            } else {
+                alert("unknown error");
+            }
+        }, "text");
     });
 
     loadConsoleText();
 });
 
 function loadConsoleText() {
-    console.log("test0");
     if (window.selectedContainerId) {
         $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
             if (window.containerScroll) {
@@ -52,24 +64,19 @@ function loadConsoleText() {
                 window.containerScroll = false;
             }
 
-            console.log("test1");
-
             var params = {
                 id: window.selectedContainerId
             };
 
-            console.log("test12");
-
-            $.get('/api/get_container_status', params, function(abc) {
-                if (abc.responseText == "running\n") {
-                    console.log("yes");
+            $.get('/api/get_container_status', params, function(text) {
+                if (text == "running") {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                 } else {
                     $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
                 }
 
-                setTimeout(loadConsoleText, 300);
-            });
+                setTimeout(loadConsoleText, 500);
+            }, "text");
         });
     } else {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');

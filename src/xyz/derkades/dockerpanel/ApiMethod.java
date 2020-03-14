@@ -23,20 +23,20 @@ public abstract class ApiMethod {
 	};
 	
 	private String name;
-	private RequestType type;
+//	private RequestType type;
 	
-	public ApiMethod(String name, RequestType type) {
+	public ApiMethod(String name) {
 		this.name = name;
-		this.type = type;
+//		this.type = type;
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public RequestType getType() {
-		return this.type;
-	}
+//	public RequestType getType() {
+//		return this.type;
+//	}
 	
 	public abstract void call(Map<String, String> parameters, HttpServletResponse response) throws Exception;
 	
