@@ -9,16 +9,17 @@ import com.github.dockerjava.api.command.InspectContainerResponse.ContainerState
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.RequestType;
 
 public class GetContainerStatus extends ApiMethod {
 	
 	public GetContainerStatus() {
-		super("get_container_status", RequestType.GET);
+		super("get_container_status");
 	}
 
 	@Override
 	public void call(Map<String, String> parameters, HttpServletResponse response) throws Exception {
+		response.setContentType("text/plain");
+		
 		if (!parameters.containsKey("id")) {
 			response.getWriter().println("Mising parameter id");
 			return;
@@ -28,7 +29,7 @@ public class GetContainerStatus extends ApiMethod {
 		
 		InspectContainerResponse inspect = App.docker().inspectContainerCmd(id).exec();	
 		ContainerState state = inspect.getState();
-		response.getWriter().println(state.getStatus());
+		response.getWriter().print(state.getStatus());
 	}
 
 }
