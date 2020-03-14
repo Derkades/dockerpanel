@@ -1,11 +1,106 @@
+
+/* Theming */
+
+  /* Main */
 html, body {
-  background-color: var(--main-bg-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
-header {
-  background-color: var(--header-bg-color);
-  
+a {
+  color: var(--accent-color);
 }
+
+a:hover {
+  color: var(--)
+}
+
+  /* Header */
+header {
+  background-color: var(--tertiary-color);
+}
+
+.navbar-brand {
+  color: var(--secondary-color);
+}
+
+.navbar-brand:hover {
+  color: var(--accent-color);
+}
+
+  /* Cards */
+.card {
+  border-radius: var(--card-border-radius);
+}
+
+  /* Buttons */
+.btn {
+  border-radius: var(--button-border-radius);
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+}
+
+.btn:hover {
+  background-color: var(--tertiary-color);
+}
+
+#buttonStart {
+  background-color: var(--button-start-background-color);
+  color: var(--button-start-text-color);
+}
+
+#buttonStart:hover {
+  background-color: var(--button-start-hover-background-color);
+  color: var(--button-start-hover-text-color);
+}
+
+#buttonRestart {
+  background-color: var(--button-restart-background-color);
+  color: var(--button-restart-text-color);
+}
+
+#buttonRestart:hover {
+  background-color: var(--button-restart-hover-background-color);
+  color: var(--button-restart-hover-text-color);
+}
+
+#buttonKill {
+  background-color: var(--button-kill-background-color);
+  color: var(--button-kill-text-color);
+}
+
+#buttonKill:hover {
+  background-color: var(--button-kill-hover-background-color);
+  color: var(--button-kill-hover-text-color);
+}
+
+  /* Indicators */
+.status-online {
+  background-color: var(--status-online-color);
+  box-shadow: var(--status-online-box-shadow);
+}
+
+.status-offline {
+  background-color: var(--status-offline-color);
+  box-shadow: var(--status-offline-box-shadow);
+}
+
+  /* Terminal */
+.terminal {
+  background-color: var(--terminal-bg-color);
+  color: var(--terminal-txt-color);
+}
+
+span.terminal-warn {
+  color: var(--terminal-wrn-color);
+}
+
+span.terminal-error {
+  color: var(--terminal-err-color);
+}
+
+
+/* Styles */
 
 footer {
   padding-top: 50px;
@@ -17,33 +112,16 @@ footer {
     outline: none;
 }
 
-.navbar {
-  background-color: hsla(0,0%,12%,1.00);
-  color: white;
-}
-
 .navbar-brand {
+  font-size: 1.25rem;
   padding-left: 20px;
-  color: white;
 }
 
-span.terminal-warn {
-  color: hsla(39,75%,50%,1.00);
-}
-
-span.terminal-info {
-  color: hsla(0,0%,70%,1.00);
-}
-
-span.terminal-error {
-  color: hsla(0,75%,58%,1.00);
-}
-
-#console-header {
+#terminal-header {
   width: 100%;
 }
 
-span.console-status {
+span.terminal-status {
   text-align: right;
 }
 
@@ -51,57 +129,22 @@ span.console-status {
   height: 8px;
   width: 8px;
   transform: translateY(-3px);
-  background-color: white;
   border-radius: 50%;
   display: inline-block;
-}
-
-.status-online {
-  background-color: #6DD95C;
-  box-shadow: 0px 0px 10px 2px #3E9C16;
-}
-
-.status-offline {
-  background-color: #E45757;
-  box-shadow: 0px 0px 10px 2px #E44343;
-}
-
-#active-status-text {
-  padding-left: 8px;
-}
-
-#content {
-  height: 100%;
-}
-
-.card {
-  border-radius: 15px;
-}
-
-#navColumn {
-  margin-bottom: 20px;
 }
 
 .nav-header {
   cursor: pointer;
 }
 
-#console {
-  background-color: var(--console-bg-color);
+#terminal {
   height: 480px;
-  
 }
 
-.console {
-  color: var(--console-text-color);
-  
-}
-
-.terminal {
+#terminal-logs, #terminal-input {
   white-space: pre-wrap;
   font-size: 0.8em;
   font-family: monospace;
-  color: var(--console-text-color);
 }
 
 #terminal-logs {
@@ -112,18 +155,18 @@ span.console-status {
 
 #terminal-input-form {
   width: 80%;
-  background-color: hsla(0,0%,0%,0.00);
+  background-color: inherit;
   border-color: hsla(0,0%,0%,0.00);
   font-size: 1em;
 }
 
 .btn-ctrl {
-  padding: 0px;
+  padding: 15px;
   text-align: center;
 }
 
-.btn-ctrl-btn {
-  border-radius: 25px;
+.btn {
+  height: 45px;
   width: 100px;
   background-color: rgba(51,51,51,1.00);
   color: rgba(201,201,201,1.00);
@@ -132,19 +175,4 @@ span.console-status {
 .btn-ctrl-btn:hover {
   color: rgba(201,201,201,1.00);  
   background-color: rgba(30,30,30,1.00);
-}
-
-#buttonStart {
-  background-color: hsla(102,75%,35%,1.00);
-  color: white;
-}
-
-#buttonRestart {
-  background-color: hsla(39,75%,50%,1.00);
-  color: white;
-}
-
-#buttonKill {
-  background-color: hsla(0,75%,35%,1.00);
-  color: white;
 }
