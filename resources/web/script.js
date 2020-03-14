@@ -75,7 +75,7 @@ function loadConsoleText() {
                     $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
                 }
 
-                setTimeout(loadConsoleText, 500);
+                setTimeout(loadConsoleText, 1000);
             }, "text");
         });
     } else {
