@@ -64,6 +64,8 @@ public class WebServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		System.out.println("GET " + request.getRequestURI());
+		
 		String uri = request.getRequestURI();
 		if (uri.contains("..")) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -71,7 +73,6 @@ public class WebServlet extends HttpServlet {
 		}
 		
 		if (uri.startsWith("/api")) {
-//			response.setContentType("text/json");
 			callApiMethod(uri.substring(5), request, response);
 		} else if (uri.equals("/theme.css")) {
 			try (InputStream stream = App.class.getResourceAsStream("/themes/" + App.getTheme() + ".css")){
@@ -85,9 +86,9 @@ public class WebServlet extends HttpServlet {
 			}
 				
 			// Try to serve static file
-			try (InputStream stream = App.class.getResourceAsStream("/web/" + uri)){
+			try (InputStream stream = App.class.getResourceAsStream("/web" + uri)){
 				if (stream == null) {
-					response.getWriter().write("404 Not found");
+					response.getWriter().write("404 Not found: " + "/web" + uri);
 					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					return;
 				}
