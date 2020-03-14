@@ -25,6 +25,10 @@ public class App {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Starting.. ");
 		
+		System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+		System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
+		System.setProperty("org.eclipse.jetty.util.log.announce", "false");
+		
 		loadTheme();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
