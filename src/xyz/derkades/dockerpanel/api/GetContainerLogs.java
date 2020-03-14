@@ -54,14 +54,10 @@ public class GetContainerLogs extends ApiMethod {
 		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
 
 			@Override
-			public void close() throws IOException {
-				System.out.println("close");
-			}
+			public void close() throws IOException {}
 
 			@Override
-			public void onStart(Closeable closeable) {
-				System.out.println("start");
-			}
+			public void onStart(Closeable closeable) {}
 
 			@Override
 			public void onNext(Frame object) {
@@ -79,7 +75,6 @@ public class GetContainerLogs extends ApiMethod {
 
 			@Override
 			public void onComplete() {
-				System.out.println("complete");
 				blocker.done();
 			}
 			
