@@ -3,7 +3,7 @@ $(document).ready(function() {
     toastr.options.newestOnTop = false;
     toastr.options.positionClass = "toast-bottom-right";
 
-    $.get('/api/get_available_containers', function(data) {
+    $.get('/api/get_containers', function(data) {
         var text = "";
         $.each(data, function(id, name) {
             text += '<button type="button" class="list-group-item list-group-item-action" ';

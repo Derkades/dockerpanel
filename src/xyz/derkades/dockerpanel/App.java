@@ -1,15 +1,13 @@
 package xyz.derkades.dockerpanel;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
@@ -20,7 +18,7 @@ import com.google.gson.Gson;
 public class App {
 	
 	private static WebServer server;
-	private static List<String> containers;
+//	private static List<String> containers;
 	private static DockerClient docker;
 	public static List<String> allDockerStatuses = Arrays.asList("created", "restarting", "running", "paused", "exited");
 	private static String theme;
@@ -41,15 +39,17 @@ public class App {
 			}
 		});
 
-		File containersFile = new File("containers.txt");
-		if (containersFile.exists()) {
-			containers = FileUtils.readLines(containersFile, "UTF-8");
-		} else {
-			containersFile.createNewFile();
-			System.err.println("No containers configured");
-			System.exit(1);
-			return;
-		}
+//		File containersFile = new File("containers.txt");
+//		if (containersFile.exists()) {
+//			containers = FileUtils.readLines(containersFile, "UTF-8");
+//		} else {
+//			containersFile.createNewFile();
+//			System.err.println("No containers configured");
+//			System.exit(1);
+//			return;
+//		}
+		
+//		if ()
 		
 //		Constructor<NettyDockerCmdExecFactory> constructor = NettyDockerCmdExecFactory.class.getConstructor();
 //		constructor.setAccessible(true);
@@ -65,24 +65,24 @@ public class App {
 		server = new WebServer();
 		server.start();
 		
-		System.out.println("\nAll containers: ");
-		for (Container container : docker.listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
-			if (container.getNames().length >= 1) {
-				System.out.println(" - " + container.getNames()[0].substring(1));
-			} else {
-				System.out.println(" - ???");
-			}
-		}
-		
-		System.out.println("\nWhitelisted containers:");
-		for (String containerName : containers) {
-			Container container = getContainerByName(containerName);
-			if (container != null) {
-				System.out.println(" - " + containerName);
-			} else {
-				System.out.println(" - " + containerName + " (UNAVAILABLE)");
-			}
-		}
+//		System.out.println("\nAll containers: ");
+//		for (Container container : docker.listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
+//			if (container.getNames().length >= 1) {
+//				System.out.println(" - " + container.getNames()[0].substring(1));
+//			} else {
+//				System.out.println(" - ???");
+//			}
+//		}
+//		
+//		System.out.println("\nWhitelisted containers:");
+//		for (String containerName : containers) {
+//			Container container = getContainerByName(containerName);
+//			if (container != null) {
+//				System.out.println(" - " + containerName);
+//			} else {
+//				System.out.println(" - " + containerName + " (UNAVAILABLE)");
+//			}
+//		}
 		
 		System.out.println();
 		
@@ -99,8 +99,20 @@ public class App {
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
 	}
 	
+	public static List<Container> getContainers() {
+		String whitelist = System.getenv("CONTAINER_WHITELIST");
+		if (whitelist == null) {
+			return docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec();
+		} else {
+			return docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec()
+					.stream()
+					.filter((c) -> Arrays.binarySearch(whitelist.split(""), c.getNames()[0].substring(1)) >= 0)
+					.collect(Collectors.toList());
+		}
+	}
+	
 	public static Container getContainerByName(String containerName) {
-		for (Container container : docker().listContainersCmd().withStatusFilter(allDockerStatuses).exec()) {
+		for (Container container : getContainers()) {
 			for (String name : container.getNames()) {
 				if (name.substring(1).equals(containerName)) {
 					return container;
@@ -110,18 +122,18 @@ public class App {
 		return null;
 	}
 	
-	public static boolean isValidContainer(String containerName) {
-		return containers.contains(containerName);
-	}
-	
-	public static boolean isValidContainer(Container container) {
-		for (String s : container.getNames()) {
-			if (containers.contains(s.substring(1))) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	public static boolean isValidContainer(String containerName) {
+//		return containers.contains(containerName);
+//	}
+//	
+//	public static boolean isValidContainer(Container container) {
+//		for (String s : container.getNames()) {
+//			if (containers.contains(s.substring(1))) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 	
 	public static DockerClient docker() {
 		return docker;
