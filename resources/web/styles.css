@@ -1,9 +1,4 @@
-:root {
-  --main-bg-color: hsla(0,0%,90%,1.00);
-  --header-bg-color: hsla(240,19%,14%,1.00);
-  --console-bg-color: hsla(0,0%,10%,1.00);
-  --console-text-color: hsla(0,0%,90%,1.00);
-}
+@import("/theme.css");
 
 html, body {
   background-color: var(--main-bg-color);

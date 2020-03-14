@@ -73,6 +73,12 @@ public class WebServlet extends HttpServlet {
 		if (uri.startsWith("/api")) {
 //			response.setContentType("text/json");
 			callApiMethod(uri.substring(5), request, response);
+		} else if (uri.equals("/theme.css")) {
+			try (InputStream stream = App.class.getResourceAsStream("/themes/" + App.getTheme() + ".css")){
+				IOUtils.copy(stream, response.getOutputStream());
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("text/css");
+			};
 		} else {
 			if (uri.endsWith("/")) {
 				uri += "index.html";
@@ -88,6 +94,14 @@ public class WebServlet extends HttpServlet {
 				
 				IOUtils.copy(stream, response.getOutputStream());
 				response.setStatus(HttpServletResponse.SC_OK);
+			}
+			
+			if (uri.endsWith(".js")) {
+				response.setContentType("application/javascript");
+			} else if (uri.endsWith(".html")){
+				response.setContentType("text/html");
+			} else if (uri.endsWith(".css")){
+				response.setContentType("text/css");
 			}
 		}
 	}

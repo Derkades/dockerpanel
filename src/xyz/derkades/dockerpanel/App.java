@@ -2,6 +2,7 @@ package xyz.derkades.dockerpanel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,10 +22,13 @@ public class App {
 	private static List<String> containers;
 	private static DockerClient docker;
 	public static List<String> allDockerStatuses = Arrays.asList("created", "restarting", "running", "paused", "exited");
+	private static String theme;
 	
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Starting.. ");
+		
+		loadTheme();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
@@ -129,9 +133,28 @@ public class App {
 		response.setContentType("text/json");
 	}
 	
-//	public static List<Container> getContainers() {
-//		return docker.listContainersCmd().exec()
-//				.stream().filter(App::isValidContainer).collect(Collectors.toList());
-//	}
+	private static void loadTheme() {
+		String theme = System.getenv("THEME");
+		if (theme == null) {
+			System.out.println("No theme set, using default.");
+			theme = "default";
+		}
+		
+		try (InputStream stream = App.class.getResourceAsStream("/themes/" + theme + ".css")){
+			if (stream == null) {
+				System.err.println("Theme not found");
+				System.exit(1);
+				return;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		App.theme = theme;
+	}
+	
+	public static String getTheme() {
+		return theme;
+	}
 	
 }
