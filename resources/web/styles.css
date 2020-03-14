@@ -140,8 +140,8 @@ nav#containerNav {
   padding-bottom: 20px;
 }
 
-.list-group-item:first-child, .list-group-item:last-child {
-  border-radius: 0px;
+.list-group-item {
+  border-radius: 0px !important; 
   border-width: 1px 0px 0px 0px;
 }
 
