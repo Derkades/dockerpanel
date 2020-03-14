@@ -4,7 +4,6 @@ $(document).ready(function() {
     toastr.options.positionClass = "toast-bottom-right";
 
     $.get('/api/get_available_containers', function(data) {
-        // console.log("test");
         var text = "";
         $.each(data, function(id, name) {
             text += '<button type="button" class="list-group-item list-group-item-action" ';
@@ -73,26 +72,28 @@ $(document).ready(function() {
 
 function loadConsoleText() {
     if (window.selectedContainerId) {
-        $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-            if (window.containerScroll) {
-                $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
-                window.containerScroll = false;
-            }
+        var params = {
+            id: window.selectedContainerId
+        };
 
-            var params = {
-                id: window.selectedContainerId
-            };
-
-            $.get('/api/get_container_status', params, function(text) {
-                if (text == "running") {
-                    $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-                } else {
-                    $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-                }
-
+        $.get('/api/get_container_status', params, function(text) {
+            if (text == "running") {
+                $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
+                $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+                    if (window.containerScroll) {
+                        $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
+                        window.containerScroll = false;
+                    }
+                    setTimeout(loadConsoleText, 1000);
+                });
+            } else {
+                $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
+                window.containerScroll = true;
+                $('#terminal-logs').text("offline");
                 setTimeout(loadConsoleText, 1000);
-            }, "text");
-        });
+            }
+        }, "text");
+
     } else {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
         $('#terminal-logs').text('');
@@ -111,7 +112,6 @@ function setSelectedContainer(id, name) {
 }
 
 function sendConsoleCommand(command){
-    // toastr.info("Sending command '" + command + "'..");
     var params = {
         id: window.selectedContainerId,
         command: command
