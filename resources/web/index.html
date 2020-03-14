@@ -26,7 +26,7 @@
             <div class="card">
               <div class="card-header">
                 <h2 class="mb-0">
-                  <a class="nav-header" data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h5>Containers</h5></a>
+                  <a data-toggle="collapse" data-target="#collapseContainerSpoiler" aria-expanded="true" aria-controls="collapseContainerSpoiler"><h5>Containers</h5></a>
                 </h2>
               </div>
               <div id="collapseContainerSpoiler" class="collapse show" data-parent="#containerSpoiler">
@@ -57,20 +57,23 @@
           <input type="checkbox" id="freeze-terminal"> Freeze terminal
           <div class="d-flex justify-content-center">
             <div class="col-md-3 button-control">
-              <button type="button" class="btn button-control" id="buttonStart">start</button>
+              <button type="button" class="btn" id="buttonStart">Start</button>
             </div>
             <div class="col-md-3 button-control">
-              <button type="button" class="btn button-control" id="buttonRestart">restart</button>
+              <button type="button" class="btn" id="buttonRestart">Restart</button>
             </div>
             <div class="col-md-3 button-control">
-              <button type="button" class="btn button-control" id="buttonKill">kill</button>
+              <button type="button" class="btn" id="buttonKill">Kill</button>
             </div>
           </div>
+          <footer>
+            <div class="container">DockerPanel | <a href="https://github.com/derkades">Derkades</a> &amp; <a href="https://github.com/baymoe">Bailey</a>  </div>
+          </footer>
         </main>
         <div class="col-md-9" id="information" style="display:none">
           <div class="card mb-3 h-100">
             <div class="card-header">
-              Getting Started
+              <h5>Getting Started</h5>
             </div>
             <div class="card-body" id="informationText">
               <h4>DockerPanel</h4>
@@ -105,8 +108,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="script.js"></script>
-    <footer>
-      <div class="container">DockerPanel | <a href="https://github.com/derkades">Derkades</a> &amp; <a href="https://github.com/baymoe">Bailey</a>  </div>
-    </footer>
   </body>
 </html>
