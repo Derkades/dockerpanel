@@ -123,7 +123,7 @@ function loadConsoleText() {
                     // setTimeout(loadConsoleText, 200);
                 } else {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-                    const out = document.getElementById("terminal-logs");
+                    const out = document.getElementsByClassName("terminal-logs")[0];
                     const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
                     $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
                         if (isScrolledToBottom) {
