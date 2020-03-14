@@ -77,7 +77,7 @@ $(document).ready(function() {
     setInterval(loadConsoleText, 2000);
     loadConsoleText();
 
-    setInterval(loadNav, 10000);
+    setInterval(loadNav, 5000);
     loadNav();
 });
 
