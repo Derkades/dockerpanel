@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+
+  dockerpanel:
+    image: derkades/dockerpanel
+    ports: ['8080:8080']
+    volumes: ['/var/run/docker.sock:/var/run/docker.sock']
+    environment:
+      CONTAINER_WHITELIST: Proxy SMP
+      # For a list of themes have a look at https://github.com/Derkades/dockerpanel/tree/master/resources/themes
+      THEME: default
+
+  proxy:
+    container_name: Proxy
+    image: derkades/waterfall
+    ports: ['25565:25565']
+    volumes: ['/opt/proxy:/data']
+    tty: true
+    stdin_open: true
+
+  smp:
+    container_name: SMP
+    image: derkades/paper:1.15
+    volumes: ['/opt/smp:/data']
+    tty: true
+    stdin_open: true
