@@ -67,6 +67,24 @@ $(document).ready(function() {
         }
     });
 
+    // $(document.body).bind('mouseup', function(e){
+    //     var selection;
+
+    //     if (window.getSelection) {
+    //       selection = window.getSelection();
+    //     } else if (document.selection) {
+    //       selection = document.selection.createRange();
+    //     }
+
+    //     if (selection){
+    //         toastr.options.onclick = function(){
+    //             window.pauseConsole = false;
+    //         };
+    //         toastr.warning("Console output suspended, click to resume");
+    //         window.pauseConsole = true;
+    //     }
+    // });
+
     loadConsoleText();
 });
 
@@ -78,17 +96,23 @@ function loadConsoleText() {
 
         $.get('/api/get_container_status', params, function(text) {
             if (text == "running") {
-                $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-                $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-                    if (window.containerScroll) {
-                        $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
-                        window.containerScroll = false;
-                    }
-                    setTimeout(loadConsoleText, 1000);
-                });
+                if ($('#freeze-console').prop("checked")) {
+                    setTimeout(loadConsoleText, 200);
+                } else {
+                    $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
+                    const out = document.getElementById("terminal-logs");
+                    const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+                    $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+                        if (isScrolledToBottom) {
+                            $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
+                            // window.containerScroll = false;
+                        }
+                        setTimeout(loadConsoleText, 1000);
+                    });
+                }
             } else {
                 $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-                window.containerScroll = true;
+                // window.containerScroll = true;
                 $('#terminal-logs').text("offline");
                 setTimeout(loadConsoleText, 1000);
             }
@@ -102,7 +126,7 @@ function loadConsoleText() {
 }
 
 function setSelectedContainer(id, name) {
-    window.containerScroll = true;
+    // window.containerScroll = true;
     window.selectedContainerId = id;
     $('.list-group button').removeClass("active");
     $('#nav-container-' + id).addClass("active");
@@ -124,3 +148,16 @@ function sendConsoleCommand(command){
         }
     }, "text");
 }
+
+function isTextSelected(input){
+    var startPos = input.selectionStart;
+    var endPos = input.selectionEnd;
+    var doc = document.selection;
+
+    if(doc && doc.createRange().text.length != 0){
+       return true;
+    }else if (!doc && input.text().substring(startPos,endPos).length != 0){
+       return true;
+    }
+    return false;
+ }
