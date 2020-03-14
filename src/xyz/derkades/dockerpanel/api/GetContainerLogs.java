@@ -6,9 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
-
 import com.github.dockerjava.api.async.ResultCallback;
+import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.model.Frame;
 
 import xyz.derkades.dockerpanel.ApiMethod;
@@ -40,70 +39,55 @@ public class GetContainerLogs extends ApiMethod {
 			tail = 100;
 		}
 		
-//		ThreadBlocker blocker = new ThreadBlocker();
-//		
-//		ResultCallback<Frame> loggingCallback = new ResultCallback<Frame>() {			
-//			@Override
-//			public void close() throws IOException {}
-//
-//			@Override
-//			public void onStart(Closeable closeable) {}
-//
-//			@Override
-//			public void onNext(Frame object) {
-//				try {
-//					String string = new String(object.getPayload()).strip().trim();
-//					
-//					System.out.println("'" + string + "'");
-//
-////					if (string.startsWith(">....") && string.length() >= 10) {
-//////						System.out.println("'" + string + "'");
-////						string = string.substring(9);
-////					}
-////					
-////					if (string.startsWith("?")) {
-////						System.out.println("'" + string + "'");
-////					}
-//					
-//					response.getWriter().println(string);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			@Override
-//			public void onError(Throwable throwable) {
-//				throwable.printStackTrace();
-//			}
-//
-//			@Override
-//			public void onComplete() {
-//				blocker.done();
-//			}
-//			
-//		};
-//				
-//		App.docker().logContainerCmd(parameters.get("id")).withTail(tail)
-//				.withTimestamps(false).withStdErr(true).withStdOut(true)
-//				.exec(loggingCallback);
-//		
-//		blocker.block();
-		
-//		File file = new File("D:\\file_name.xml");
-//		int n_lines = 10;
-//		int counter = 0; 
-//		ReversedLinesFileReader object = new ReversedLinesFileReader(file);
-//		while(counter < n_lines) {
-//		    System.out.println(object.readLine());
-//		    counter++;
-//		}
-		
-		Process process = new ProcessBuilder()
-				.command("docker", "exec", id, "tail", "-n", tail + "", "logs/latest.log")
-				.start();
+//		Process process = new ProcessBuilder()
+//				.command("docker", "exec", id, "tail", "-n", tail + "", "logs/latest.log"))
+//				.start();
 		;
 		
-		response.getWriter().print(IOUtils.toString(process.getInputStream(), "UTF-8"));
+//		response.getWriter().print(IOUtils.toString(process.getInputStream(), "UTF-8"));
+		
+		ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
+				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
+		
+		ThreadBlocker blocker = new ThreadBlocker();
+		
+		ResultCallback<Frame> callback = new ResultCallback<Frame>() {
+
+			@Override
+			public void close() throws IOException {
+				System.out.println("close");
+			}
+
+			@Override
+			public void onStart(Closeable closeable) {
+				System.out.println("start");
+			}
+
+			@Override
+			public void onNext(Frame object) {
+				try {
+					response.getWriter().println(new String(object.getPayload()).trim());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void onError(Throwable throwable) {
+				throwable.printStackTrace();
+			}
+
+			@Override
+			public void onComplete() {
+				System.out.println("complete");
+				blocker.done();
+			}
+			
+		};
+		
+		App.docker().execStartCmd(cmd.getId()).exec(callback);
+		
+		blocker.block();
 	}
 
 }
