@@ -9,16 +9,16 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.amihaiemil.docker.Container;
-import com.amihaiemil.docker.Docker;
-import com.amihaiemil.docker.LocalDocker;
-import com.google.common.collect.Streams;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.core.DockerClientImpl;
+import com.github.dockerjava.okhttp.OkHttpDockerCmdExecFactory;
 import com.google.gson.Gson;
 
 public class App {
 	
 	private static WebServer server;
-	private static Docker docker;
+	private static DockerClient docker;
 	private static String theme;
 	
 	public static void main(String[] args) throws Exception {
@@ -48,8 +48,10 @@ public class App {
 			return;
 		}
 		
-		docker = new LocalDocker(docksock);
-		System.out.println("Connected to docker version " + docker.version().version() + " on " + docker.version().osName());
+		docker = DockerClientImpl.getInstance()
+			    .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
+		
+		System.out.println("Connected to docker version " + docker.versionCmd().exec().getVersion() + " on " + docker.versionCmd().exec().getOperatingSystem());
 		
 		server = new WebServer();
 		server.start();
@@ -77,36 +79,29 @@ public class App {
 	public static List<Container> getContainers() {
 		String whitelist = System.getenv("CONTAINER_WHITELIST");
 		if (whitelist == null) {
-			return Streams.stream(docker().containers().all()).collect(Collectors.toList());
+			return docker().listContainersCmd().exec();
 		} else {
-			List<String> split = Arrays.asList(whitelist.split(" "));
-			return Streams.stream(docker().containers().all())
-					.filter((c) -> {
-						try {
-							return split.contains(containerName(c));
-						} catch (IOException e) {
-							e.printStackTrace();
-							return false;
-						}
-					})
-					.collect(Collectors.toList());
+			return docker().listContainersCmd()
+					.withNameFilter(Arrays.stream(whitelist.split(" ")).map((s) -> "/" + s).collect(Collectors.toList()))
+					.exec();
 		}
 	}
 	
 	public static String containerName(Container container) throws IOException {
-		return container.inspect().asJsonObject().getString("Name").substring(1);
+//		return container.inspect().asJsonObject().getString("Name").substring(1);
+		return container.getNames()[0].substring(1);
 	}
 	
 	public static Container container(String id) {
 		for (Container container : getContainers()) {
-			if (container.containerId().equals(id)) {
+			if (container.getId().equals(id)) {
 				return container;
 			}
 		}
 		return null;
 	}
 	
-	public static Docker docker() {
+	public static DockerClient docker() {
 		return docker;
 	}
 	
