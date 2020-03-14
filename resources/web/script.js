@@ -61,6 +61,13 @@ $(document).ready(function() {
         }, "text");
     });
 
+    $('#terminal-input-form').keypress(function(e){
+        if(e.keyCode == 13) {
+            sendConsoleCommand($('#terminal-input-form').val());
+            $('#terminal-input-form').val('');
+        }
+    });
+
     loadConsoleText();
 });
 
@@ -101,4 +108,19 @@ function setSelectedContainer(id, name) {
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
     $('#serverTitle').text(" - " + name);
+}
+
+function sendConsoleCommand(command){
+    // toastr.info("Sending command '" + command + "'..");
+    var params = {
+        id: window.selectedContainerId,
+        command: command
+    };
+    $.get('/api/send_command', params, function(text) {
+        if (text == "ok") {
+            toastr.success("Command sent");
+        } else {
+            toastr.error("Error occured while sending command");
+        }
+    }, "text");
 }
