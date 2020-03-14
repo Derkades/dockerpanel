@@ -24,7 +24,7 @@ header {
   background-color: var(--tertiary-color);
 }
 
-.navbar-brand {
+.navbar-brand, .navbar-brand:visited {
   color: var(--secondary-color);
 }
 
@@ -134,7 +134,12 @@ footer {
 }
 
 nav#containerNav {
-  padding-bottom: px;
+  padding-bottom: 20px;
+}
+
+.list-group-item:first-child, .list-group-item:last-child {
+  border-radius: 0px;
+  border-width: 1px 0px 0px 0px;
 }
 
 span.terminal-status {
