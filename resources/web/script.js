@@ -5,7 +5,7 @@ $(document).ready(function() {
             text += '<button type="button" class="list-group-item list-group-item-action" ';
             text += 'id="nav-container-' + id + '" ';
             text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
-            text += '<span style="text-align: right; width: 100%;"><div class="circle" ';
+            text += '<span style="float: right;"><div class="circle" ';
             text += 'id="nav-container-' + id + '-button"></div></span>';
             text += '</button>\n'
         });
