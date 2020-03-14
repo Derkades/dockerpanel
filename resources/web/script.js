@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    toastr.options.progressBar = true;
+    toastr.options.newestOnTop = false;
+    toastr.options.positionClass = "toast-bottom-right";
+
     $.get('/api/get_available_containers', function(data) {
         // console.log("test");
         var text = "";
@@ -25,14 +29,16 @@ $(document).ready(function() {
         var params = {
             id: window.selectedContainerId
         };
-        alert('start..');
+
+        toastr.info("Starting..");
+
         $.get('/api/start_container', params, function(text) {
             if (text == "ok") {
-                alert("success");
+                toastr.success("Container started");
             } else if (text == "already started"){
-                alert("already started");
+                toastr.warning("This container is already started");
             } else {
-                alert("unknown error");
+                toastr.error("An error occured while starting the container");
             }
         }, "text");
     });
@@ -41,14 +47,16 @@ $(document).ready(function() {
         var params = {
             id: window.selectedContainerId
         };
-        alert('stop..');
+
+        toastr.info("Stopping..");
+
         $.get('/api/stop_container', params, function(text) {
             if (text == "ok") {
-                alert("success");
+                toastr.success("Container stopped");
             } else if (text == "already stopped"){
-                alert("already stopped");
+                toastr.warning("This container is already stopped");
             } else {
-                alert("unknown error");
+                toastr.error("An error occured while stopping the container");
             }
         }, "text");
     });
