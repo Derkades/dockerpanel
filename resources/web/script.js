@@ -49,10 +49,10 @@ $(document).ready(function() {
         }, "text");
     });
 
-    $('#terminal-input-form').keypress(function(e){
+    $('.terminal-input-form').keypress(function(e){
         if(e.keyCode == 13) {
-            sendConsoleCommand($('#terminal-input-form').val());
-            $('#terminal-input-form').val('');
+            sendConsoleCommand($('.terminal-input-form').val());
+            $('.terminal-input-form').val('');
         }
     });
 
@@ -125,9 +125,9 @@ function loadConsoleText() {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                     const out = document.getElementById("terminal-logs");
                     const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-                    $('#terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+                    $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
                         if (isScrolledToBottom) {
-                            $('#terminal-logs').scrollTop($('#terminal-logs')[0].scrollHeight);
+                            $('.terminal-logs').scrollTop($('.terminal-logs')[0].scrollHeight);
                             // window.containerScroll = false;
                         }
                         // setTimeout(loadConsoleText, 1000);
@@ -136,14 +136,14 @@ function loadConsoleText() {
             } else {
                 $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
                 // window.containerScroll = true;
-                $('#terminal-logs').text("offline");
+                $('.terminal-logs').text("offline");
                 // setTimeout(loadConsoleText, 1000);
             }
         }, "text");
 
     } else {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-        $('#terminal-logs').text('');
+        $('.terminal-logs').text('');
         // setTimeout(loadConsoleText, 100);
     }
 }
