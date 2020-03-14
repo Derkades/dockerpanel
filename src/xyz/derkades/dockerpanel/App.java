@@ -1,28 +1,27 @@
 package xyz.derkades.dockerpanel;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.amihaiemil.docker.Container;
+import com.amihaiemil.docker.Docker;
+import com.amihaiemil.docker.LocalDocker;
+import com.google.common.collect.Streams;
 import com.google.gson.Gson;
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.exceptions.DockerException;
-import com.spotify.docker.client.messages.Container;
 
 public class App {
 	
 	private static WebServer server;
-	private static DockerClient docker;
+	private static Docker docker;
 	private static String theme;
 	
-	public static void main(String[] args) throws IOException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, DockerException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Starting.. ");
 		
@@ -38,15 +37,22 @@ public class App {
 			}
 		});
 		
-		docker = new DefaultDockerClient(URI.create("unix:///var/run/docker.sock"));
-		System.out.println("Connected to docker version " + docker.version().version());
+		File docksock = new File("/var/run/docker.sock");
+		if (!docksock.exists()) {
+			System.err.println("Docker socket not found");
+			System.exit(1);
+			return;
+		}
+		
+		docker = new LocalDocker(docksock);
+		System.out.println("Connected to docker version " + docker.version().version() + " on " + docker.version().osName());
 		
 		server = new WebServer();
 		server.start();
 		
 		System.out.println("\nContainers: ");
 		for (Container container : App.getContainers()) {
-			System.out.println(container.names().get(0).substring(1));
+			System.out.println(" - " + containerName(container));
 		}
 		
 		System.out.println();
@@ -64,30 +70,48 @@ public class App {
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
 	}
 	
-	public static List<Container> getContainers() throws DockerException, InterruptedException {
+	public static List<Container> getContainers() {
 		String whitelist = System.getenv("CONTAINER_WHITELIST");
 		if (whitelist == null) {
-			return docker().listContainers();
+			return Streams.stream(docker().containers().all()).collect(Collectors.toList());
 		} else {
-			return docker().listContainers()
-					.stream()
-					.filter((c) -> Arrays.binarySearch(whitelist.split(""), c.names().get(0).substring(1)) >= 0)
+			List<String> split = Arrays.asList(whitelist.split(" "));
+			return Streams.stream(docker().containers().all())
+					.filter((c) -> {
+						try {
+							return split.contains(containerName(c));
+						} catch (IOException e) {
+							e.printStackTrace();
+							return false;
+						}
+					})
 					.collect(Collectors.toList());
 		}
 	}
 	
-	public static Container getContainerByName(String containerName) throws DockerException, InterruptedException {
+	public static Container getContainerByName(String containerName) throws IOException {
 		for (Container container : getContainers()) {
-			for (String name : container.names()) {
-				if (name.substring(1).equals(containerName)) {
-					return container;
-				}
+			if (containerName(container).substring(1).equals(containerName)) {
+				return container;
 			}
 		}
 		return null;
 	}
 	
-	public static DockerClient docker() {
+	public static String containerName(Container container) throws IOException {
+		return container.inspect().asJsonObject().getString("Name").substring(1);
+	}
+	
+	public static Container container(String id) {
+		for (Container container : getContainers()) {
+			if (container.containerId().equals(id)) {
+				return container;
+			}
+		}
+		return null;
+	}
+	
+	public static Docker docker() {
 		return docker;
 	}
 	

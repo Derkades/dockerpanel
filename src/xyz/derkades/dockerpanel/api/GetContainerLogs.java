@@ -5,8 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.spotify.docker.client.LogStream;
-import com.spotify.docker.client.messages.ExecCreation;
+import com.amihaiemil.docker.Container;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
@@ -26,8 +25,6 @@ public class GetContainerLogs extends ApiMethod {
 			return;
 		}
 		
-		String id = parameters.get("id");
-		
 		int tail;
 		
 		if (parameters.containsKey("tail")) {
@@ -36,10 +33,19 @@ public class GetContainerLogs extends ApiMethod {
 			tail = 100;
 		}
 		
-		String[] command = { "tail", "-n", tail + "", "logs/latest.log" };
-		ExecCreation execCreation = App.docker().execCreate(id, command);
-		LogStream stream = App.docker().execStart(execCreation.id());
-		response.getWriter().print(stream.readFully());
+		String id = parameters.get("id");
+		Container container = App.container(id);
+		if (container == null) {
+			response.getWriter().print("invalid id");
+			return;
+		}
+		
+		response.getWriter().print(container.logs().fetch());
+		
+//		String[] command = { "tail", "-n", tail + "", "logs/latest.log" };
+//		ExecCreation execCreation = App.docker().execCreate(id, command);
+//		LogStream stream = App.docker().execStart(execCreation.id());
+//		response.getWriter().print(stream.readFully());
 //		stream.forEachRemaining((message) -> {
 //			try {
 //				response.getWriter().println(new String(message.content().array()).trim());
