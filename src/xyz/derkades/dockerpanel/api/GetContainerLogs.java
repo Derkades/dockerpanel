@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.command.ExecCreateCmdResponse;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Frame;
 
@@ -59,9 +58,9 @@ public class GetContainerLogs extends ApiMethod {
 //			}
 //		});
 
-		final ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
-				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
-
+//		final ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
+//				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
+//
 		final ThreadBlocker blocker = new ThreadBlocker();
 
 		final ResultCallback<Frame> callback = new ResultCallback<Frame>() {
@@ -93,7 +92,12 @@ public class GetContainerLogs extends ApiMethod {
 
 		};
 
-		App.docker().execStartCmd(cmd.getId()).exec(callback);
+//		App.docker().execStartCmd(cmd.getId()).exec(callback);
+
+		App.docker().logContainerCmd(container.getId()).withTail(tail)
+				.withStdOut(true)
+				.withStdErr(true)
+				.exec(callback);
 
 		blocker.block();
 	}
