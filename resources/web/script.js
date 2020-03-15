@@ -119,7 +119,7 @@ function loadConsoleText() {
 
         $.get('/api/get_container_status', params, function(text) {
             if (text == "running") {
-                if (!$('#freeze-console').prop("checked")) {
+                if ($('freeze-terminal').prop("checked") == false) {
                     $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
                     const out = document.getElementsByClassName("terminal-logs")[0];
                     const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
