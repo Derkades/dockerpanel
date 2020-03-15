@@ -29,7 +29,7 @@ public class WebServlet extends HttpServlet {
 
 			try {
 				method.call(parameters, response);
-				System.out.println("API: " + methodName);
+//				System.out.println("API: " + methodName);
 			} catch (final Exception e) {
 				System.err.println("Error occured in API request");
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
