@@ -1,9 +1,9 @@
 package xyz.derkades.dockerpanel.api;
 
-import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +35,9 @@ public class SendCommand extends ApiMethod {
 			return;
 		}
 
-//		String id = parameters.get("id");
+		final String id = parameters.get("id");
 		final String command = parameters.get("command");
-//
+
 //		Process process =
 //				new ProcessBuilder()
 //				.command("socat", "EXEC:\"docker attach " + id + "\",pty", "STDIN")
@@ -53,30 +53,22 @@ public class SendCommand extends ApiMethod {
 //			response.getWriter().write("error");
 //		}
 
-		final String id = parameters.get("id");
 		final Container container = App.container(id);
 		if (container == null) {
 			response.getWriter().print("invalid id");
 			return;
 		}
 
-
-		final ResultCallback<Frame> callback = new ResultCallback<Frame>() {
-
-			@Override
-			public void close() throws IOException {
-				System.out.println("close");
-			}
+		final ResultCallback.Adapter<Frame> callback = new ResultCallback.Adapter<Frame>() {
 
 			@Override
-			public void onStart(final Closeable closeable) {
-				System.out.println("start");
-			}
+			public void close() throws IOException {}
 
 			@Override
-			public void onNext(final Frame object) {
-				System.out.println("next");
-			}
+			public void onStart(final Closeable closeable) {}
+
+			@Override
+			public void onNext(final Frame object) {}
 
 			@Override
 			public void onError(final Throwable throwable) {
@@ -84,14 +76,20 @@ public class SendCommand extends ApiMethod {
 			}
 
 			@Override
-			public void onComplete() {
-				System.out.println("complete");
-			}
+			public void onComplete() {}
 
 		};
 
-		final InputStream stdin = new ByteArrayInputStream(command.getBytes());
-		App.docker().attachContainerCmd(container.getId()).withStdIn(stdin).exec(callback);
+		final PipedOutputStream out = new PipedOutputStream();
+		final PipedInputStream in = new PipedInputStream(out);
+
+		App.docker().attachContainerCmd(container.getId()).withFollowStream(true)
+				.withStdIn(in).exec(callback);
+
+		out.write((command + "\n").getBytes());
+		out.flush();
+		out.close();
+		callback.close();
 		response.getWriter().print("ok");
 	}
 
