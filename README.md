@@ -1,5 +1,7 @@
 # Dockerpanel
 
+An easy to use remote-access panel to manage existing docker containers. No setup required, just add a single docker container.
+
 <img src="https://cdn.discordapp.com/attachments/645710098286510090/688788796149334145/screener_1584290423207.png" height="500">
 
 ## Features and design principles
