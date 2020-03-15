@@ -4,6 +4,8 @@ An easy to use remote-access panel to manage existing docker containers. No setu
 
 <img src="https://cdn.discordapp.com/attachments/645710098286510090/688788796149334145/screener_1584290423207.png" height="500">
 
+![desktop screenshot](https://cdn.discordapp.com/attachments/645710098286510090/688791911783596120/Screenshot_from_2020-03-15_17-52-41.png)
+
 ## Features and design principles
 
 * Start and stop docker containers
