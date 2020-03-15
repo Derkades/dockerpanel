@@ -72,8 +72,10 @@ $(document).ready(function() {
     });
 
     $('.terminal-logs').click(function(){
-        window.pauseTerminal = true;
-        toastr.info("Clicked in the terminal, log paused.");
+        if (!window.pauseTerminal){
+            window.pauseTerminal = true;
+            toastr.info("Clicked in the terminal, log paused.");
+        }
     });
 
     setInterval(loadConsoleText, 1500);
