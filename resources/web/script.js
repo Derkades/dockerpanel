@@ -51,12 +51,20 @@ $(document).ready(function() {
 
     $('.terminal-input-form').keypress(function(e) {
         if (e.keyCode == 13) {
+            if (!$('.terminal-input-form').val()){
+                toastr.warning("Cannot send empty command");
+                return;
+            }
             sendConsoleCommand($('.terminal-input-form').val());
             $('.terminal-input-form').val('');
         }
     });
 
     $('#command-send-button').click(function(e) {
+        if (!$('.terminal-input-form').val()){
+            toastr.warning("Cannot send empty command");
+            return;
+        }
         sendConsoleCommand($('.terminal-input-form').val());
         $('.terminal-input-form').val('');
     });
