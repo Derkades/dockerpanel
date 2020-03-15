@@ -49,11 +49,16 @@ $(document).ready(function() {
         }, "text");
     });
 
-    $('.terminal-input-form').keypress(function(e){
-        if(e.keyCode == 13) {
+    $('.terminal-input-form').keypress(function(e) {
+        if (e.keyCode == 13) {
             sendConsoleCommand($('.terminal-input-form').val());
             $('.terminal-input-form').val('');
         }
+    });
+
+    $('#command-send-button').click(function(e) {
+        sendConsoleCommand($('.terminal-input-form').val());
+        $('.terminal-input-form').val('');
     });
 
     // $(document.body).bind('mouseup', function(e){
