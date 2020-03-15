@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM openjdk:11-jre
 
 # compile app
 # RUN apt update && \
@@ -16,21 +16,8 @@ FROM ubuntu
 #     apt clean && \
 #     rm -rf /var/lib/apt/lists/*
 
-# install docker
-RUN apt update && \
-    apt install -y curl && \
-    curl -sSL https://get.docker.com | sh && \
-    apt purge -y curl && \
-    apt autoremove -y && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
-
-# install jre and socat
-RUN apt update && \
-    apt install -y openjdk-11-jre socat && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/*
-
 COPY target/dockerpanel-dev.jar /dockerpanel.jar
+
+EXPOSE 8080
 
 ENTRYPOINT [ "java", "-jar", "/dockerpanel.jar" ]
