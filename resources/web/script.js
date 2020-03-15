@@ -167,6 +167,10 @@ function setSelectedContainer(id, name) {
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
     $('#serverTitle').text(" - " + name);
+    if (window.pauseTerminal){
+        window.pauseTerminal = false;
+        toastr.clear();
+    }
     setNavActive();
     loadConsoleText();
 }
