@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.github.dockerjava.api.exception.NotModifiedException;
 import com.github.dockerjava.api.model.Container;
 
 import xyz.derkades.dockerpanel.ApiMethod;
@@ -36,6 +37,8 @@ public class StopContainer extends ApiMethod {
 //			container.stop();
 			App.docker().stopContainerCmd(container.getId()).exec();
 			response.getWriter().print("ok");
+		} catch (final NotModifiedException e) {
+			response.getWriter().print("already stopped");
 		} catch (final IOException e) {
 			response.getWriter().print("error");
 		}
