@@ -3,6 +3,8 @@ $(document).ready(function() {
     toastr.options.newestOnTop = false;
     toastr.options.positionClass = "toast-bottom-right";
 
+    window.pauseTerminal = false;
+
     $('.navbar-brand').click(function() {
         $('.list-group button').removeClass("active");
         $('main').css('display', 'none');
@@ -69,23 +71,10 @@ $(document).ready(function() {
         $('.terminal-input-form').val('');
     });
 
-    // $(document.body).bind('mouseup', function(e){
-    //     var selection;
-
-    //     if (window.getSelection) {
-    //       selection = window.getSelection();
-    //     } else if (document.selection) {
-    //       selection = document.selection.createRange();
-    //     }
-
-    //     if (selection){
-    //         toastr.options.onclick = function(){
-    //             window.pauseConsole = false;
-    //         };
-    //         toastr.warning("Console output suspended, click to resume");
-    //         window.pauseConsole = true;
-    //     }
-    // });
+    $('.terminal-logs').click(function(){
+        window.pauseTerminal = true;
+        toastr.info("Clicked in the terminal, log paused.");
+    });
 
     setInterval(loadConsoleText, 1500);
     loadConsoleText();
@@ -125,23 +114,40 @@ function loadNav() {
 }
 
 function loadConsoleText() {
+    if (window.pauseTerminal){
+        toastr.warning('Console output paused. Click to resume', '',
+            {
+                onclick: function() {
+                    toastr.success('Console output resumed');
+                    window.pauseTerminal = false;
+
+                },
+                preventDuplicates: true,
+                timeOut: 0,
+            }
+        );
+        return;
+    }
+
+    console.log("test");
+
     if (window.selectedContainerId) {
         var params = {
             id: window.selectedContainerId
         };
 
         $.get('/api/get_container_status', params, function(text) {
+            console.log("'" + text + "'");
             if (text == "running") {
-                if ($('freeze-terminal').prop("checked") == false) {
-                    $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-                    const out = document.getElementsByClassName("terminal-logs")[0];
-                    const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-                    $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-                        if (isScrolledToBottom) {
-                            $('.terminal-logs').scrollTop($('.terminal-logs')[0].scrollHeight);
-                        }
-                    });
-                }
+                $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
+                console.log("running!");
+                const out = document.getElementsByClassName("terminal-logs")[0];
+                const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
+                $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+                    if (isScrolledToBottom) {
+                        $('.terminal-logs').scrollTop($('.terminal-logs')[0].scrollHeight);
+                    }
+                });
             } else {
                 $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
                 $('.terminal-logs').text("offline");
