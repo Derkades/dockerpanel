@@ -20,6 +20,7 @@ public class App {
 	private static WebServer server;
 	private static DockerClient docker;
 	private static String theme;
+	public static int tailLines;
 
 	public static void main(final String[] args) throws Exception {
 		final long startTime = System.currentTimeMillis();
@@ -30,6 +31,8 @@ public class App {
 		System.setProperty("org.eclipse.jetty.util.log.announce", "false");
 
 		loadTheme();
+
+		tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
 
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

@@ -29,14 +29,6 @@ public class GetContainerLogs extends ApiMethod {
 			return;
 		}
 
-		int tail;
-
-		if (parameters.containsKey("tail")) {
-			tail = Integer.parseInt(parameters.get("tail"));
-		} else {
-			tail = 100;
-		}
-
 		final String id = parameters.get("id");
 		final Container container = App.container(id);
 		if (container == null) {
@@ -75,7 +67,7 @@ public class GetContainerLogs extends ApiMethod {
 
 		};
 
-		App.docker().logContainerCmd(container.getId()).withTail(tail)
+		App.docker().logContainerCmd(container.getId()).withTail(App.tailLines)
 				.withStdOut(true)
 				.withStdErr(true)
 				.exec(callback);
