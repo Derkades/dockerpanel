@@ -44,23 +44,6 @@ public class GetContainerLogs extends ApiMethod {
 			return;
 		}
 
-//		response.getWriter().print(container.logs().fetch());
-
-//		String[] command = { "tail", "-n", tail + "", "logs/latest.log" };
-//		ExecCreation execCreation = App.docker().execCreate(id, command);
-//		LogStream stream = App.docker().execStart(execCreation.id());
-//		response.getWriter().print(stream.readFully());
-//		stream.forEachRemaining((message) -> {
-//			try {
-//				response.getWriter().println(new String(message.content().array()).trim());
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		});
-
-//		final ExecCreateCmdResponse cmd = App.docker().execCreateCmd(id)
-//				.withAttachStdout(true).withCmd("tail", "-n", tail + "", "logs/latest.log").exec();
-//
 		final ThreadBlocker blocker = new ThreadBlocker();
 
 		final ResultCallback<Frame> callback = new ResultCallback<Frame>() {
@@ -91,8 +74,6 @@ public class GetContainerLogs extends ApiMethod {
 			}
 
 		};
-
-//		App.docker().execStartCmd(cmd.getId()).exec(callback);
 
 		App.docker().logContainerCmd(container.getId()).withTail(tail)
 				.withStdOut(true)

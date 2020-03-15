@@ -38,46 +38,21 @@ public class SendCommand extends ApiMethod {
 		final String id = parameters.get("id");
 		final String command = parameters.get("command");
 
-//		Process process =
-//				new ProcessBuilder()
-//				.command("socat", "EXEC:\"docker attach " + id + "\",pty", "STDIN")
-//				.start();
-//		OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
-//		writer.write(command + "\n");
-//		writer.flush();
-//		writer.close();
-//
-//		if (process.waitFor() == 0) {
-//			response.getWriter().write("ok");
-//		} else {
-//			response.getWriter().write("error");
-//		}
-
 		final Container container = App.container(id);
 		if (container == null) {
 			response.getWriter().print("invalid id");
 			return;
 		}
 
+		// No need to do anything with stdout
 		final ResultCallback.Adapter<Frame> callback = new ResultCallback.Adapter<Frame>() {
-
-			@Override
-			public void close() throws IOException {}
-
-			@Override
-			public void onStart(final Closeable closeable) {}
-
-			@Override
-			public void onNext(final Frame object) {}
-
-			@Override
-			public void onError(final Throwable throwable) {
+			@Override public void close() throws IOException {}
+			@Override public void onStart(final Closeable closeable) {}
+			@Override public void onNext(final Frame object) {}
+			@Override public void onComplete() {}
+			@Override public void onError(final Throwable throwable) {
 				throwable.printStackTrace();
 			}
-
-			@Override
-			public void onComplete() {}
-
 		};
 
 		final PipedOutputStream out = new PipedOutputStream();
@@ -90,6 +65,7 @@ public class SendCommand extends ApiMethod {
 		out.flush();
 		out.close();
 		callback.close();
+
 		response.getWriter().print("ok");
 	}
 

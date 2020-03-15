@@ -32,12 +32,6 @@ public class GetContainerStatus extends ApiMethod {
 		}
 
 		response.getWriter().print(container.getState());
-
-//		try {
-//			response.getWriter().print(container.inspect().get("State").asJsonObject().get("Status").toString().replace("\"", ""));
-//		} catch (final IOException e) {
-//			response.getWriter().print("error");
-//		}
 	}
 
 }
