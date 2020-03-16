@@ -1,8 +1,8 @@
 package xyz.derkades.dockerpanel.api;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,7 +12,6 @@ import com.github.dockerjava.api.model.Frame;
 
 import xyz.derkades.dockerpanel.ApiMethod;
 import xyz.derkades.dockerpanel.App;
-import xyz.derkades.dockerpanel.ThreadBlocker;
 
 public class GetContainerLogs extends ApiMethod {
 
@@ -36,15 +35,7 @@ public class GetContainerLogs extends ApiMethod {
 			return;
 		}
 
-		final ThreadBlocker blocker = new ThreadBlocker();
-
-		final ResultCallback<Frame> callback = new ResultCallback<Frame>() {
-
-			@Override
-			public void close() throws IOException {}
-
-			@Override
-			public void onStart(final Closeable closeable) {}
+		final ResultCallback.Adapter<Frame> callback = new ResultCallback.Adapter<Frame>() {
 
 			@Override
 			public void onNext(final Frame object) {
@@ -60,11 +51,6 @@ public class GetContainerLogs extends ApiMethod {
 				throwable.printStackTrace();
 			}
 
-			@Override
-			public void onComplete() {
-				blocker.done();
-			}
-
 		};
 
 		App.docker().logContainerCmd(container.getId()).withTail(App.tailLines)
@@ -72,7 +58,9 @@ public class GetContainerLogs extends ApiMethod {
 				.withStdErr(true)
 				.exec(callback);
 
-		blocker.block();
+		if (!callback.awaitCompletion(10, TimeUnit.SECONDS)) {
+			response.getWriter().println("timeout");
+		}
 	}
 
 }
