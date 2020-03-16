@@ -33,10 +33,10 @@
   --button-restart-hover-background-color: hsla(39, 75%, 35%, 1.00);
   --button-restart-hover-text-color: hsla(0, 0%, 80%, 1.00);
 
-  --button-kill-background-color: hsla(0, 75%, 45%, 1.00);
-  --button-kill-text-color: hsla(0, 0%, 100%, 1.00);
-  --button-kill-hover-background-color: hsla(0, 75%, 35%, 1.00);
-  --button-kill-hover-text-color: hsla(0, 0%, 80%, 1.00);
+  --button-stop-background-color: hsla(0, 75%, 45%, 1.00);
+  --button-stop-text-color: hsla(0, 0%, 100%, 1.00);
+  --button-stop-hover-background-color: hsla(0, 75%, 35%, 1.00);
+  --button-stop-hover-text-color: hsla(0, 0%, 80%, 1.00);
 
   /* optional theming options */
   --card-border-radius: 15px;

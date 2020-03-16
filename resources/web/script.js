@@ -3,6 +3,11 @@ $(document).ready(function() {
     toastr.options.newestOnTop = false;
     toastr.options.positionClass = "toast-bottom-right";
 
+    /*
+     * window.pauseTerminal keeps track of whether the terminal should temporarily
+     * not refresh. This is set to true when a user makes a selection. By default,
+     * terminal output should refresh automatically.
+     */
     window.pauseTerminal = false;
 
     $('.navbar-brand').click(function() {
@@ -13,7 +18,7 @@ $(document).ready(function() {
         $('#serverTitle').text("");
     });
 
-    $('#buttonStart').click(function() {
+    $('#button-start').click(function() {
         var params = {
             id: window.selectedContainerId
         };
@@ -32,7 +37,7 @@ $(document).ready(function() {
         }, "text");
     });
 
-    $('#buttonKill').click(function() {
+    $('#button-stop').click(function() {
         var params = {
             id: window.selectedContainerId
         };
@@ -88,6 +93,14 @@ $(document).ready(function() {
 function loadNav() {
     $.get('/api/get_containers', function(data) {
         var text = "";
+        /*
+         * Generate a string of HTML buttons for each container. Each button has a
+         * click event that triggers setSelectedContainer. This function is called
+         * on an interval, to periodically refresh the navbar if new containers are
+         * created. Where possible, the color of the status dot is re-used so that
+         * the status color dots don't flicker. After adding all the buttons, the
+         * status dots are updated asynchronously.
+         */
         $.each(data, function(id, name) {
             previousStatusClass = $('#nav-container-' + id + '-status').hasClass('status-online') ? "status-online" : "status-offline";
             text += '<button type="button" class="list-group-item list-group-item-action" ';
@@ -116,6 +129,21 @@ function loadNav() {
 }
 
 function loadConsoleText() {
+    /*
+     * If no container is selected, clear the terminal and set the container status
+     * dot to offline. This means that if a user switches to a different page and
+     * then decides to view a different container, they won't briefly see the
+     * terminal output of the first container.
+     */
+    if (!window.selectedContainerId) {
+        $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
+        $('.terminal-logs').text('');
+    }
+
+    /*
+     * If terminal output is paused, send a message. This message is shown
+     * indefinitely. When clicked, terminal output will resume.
+     */
     if (window.pauseTerminal){
         toastr.warning('Console output paused. Click to resume', '',
             {
@@ -131,38 +159,42 @@ function loadConsoleText() {
         return;
     }
 
-    console.log("test");
+    $.get(  '/api/get_container_status',
+            { id: window.selectedContainerId },
+            function(text) {
 
-    if (window.selectedContainerId) {
-        var params = {
-            id: window.selectedContainerId
-        };
+        if (text == "running") {
+            $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
 
-        $.get('/api/get_container_status', params, function(text) {
-            console.log("'" + text + "'");
-            if (text == "running") {
-                $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-                console.log("running!");
-                const out = document.getElementsByClassName("terminal-logs")[0];
-                const isScrolledToBottom = out.scrollHeight - out.clientHeight <= out.scrollTop + 1;
-                $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-                    if (isScrolledToBottom) {
-                        $('.terminal-logs').scrollTop($('.terminal-logs')[0].scrollHeight);
-                    }
-                });
-            } else {
-                $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-                $('.terminal-logs').text("offline");
-            }
-        }, "text");
-
-    } else {
-        $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-        $('.terminal-logs').text('');
-    }
+            /*
+             * The container is running, load logs for this container. Before
+             * loading new text into the terminal, check if the user is scrolled
+             * to the bottom. If they are, after the text is loaded, scroll to
+             * the bottom again so div stays scrolled to the bottom like terminals
+             * should. If the user has intentionally scrolled up to have a look
+             * at something, the scroll position is not modified.
+             */
+            const term = document.getElementsByClassName("terminal-logs")[0];
+            const isScrolledToBottom = term.scrollHeight - term.clientHeight <= term.scrollTop + 1;
+            $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+                if (isScrolledToBottom) {
+                    term.scrollTop(term.scrollHeight);
+                }
+            });
+        } else {
+            $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
+            $('.terminal-logs').text("offline");
+        }
+    }, "text");
 }
 
 function setSelectedContainer(id, name) {
+    /*
+     * Change the selected container. This function is called when a user clicks on
+     * an entry in the container nav. Sets window.selectedContainerId, updates
+     * 'active' classes for navbar entries and unpauses the terminal if it was
+     * paused.
+     */
     window.selectedContainerId = id;
     $('main').css('display', 'initial');
     $('#information').css('display', 'none');
@@ -191,6 +223,8 @@ function sendConsoleCommand(command){
     $.get('/api/send_command', params, function(text) {
         if (text == "ok") {
             toastr.success("Command sent");
+        } else if (text == "timeout") {
+            toastr.error("Request timed out: did not receive a response from docker in time.");
         } else {
             toastr.error("Error occured while sending command");
         }
@@ -198,16 +232,3 @@ function sendConsoleCommand(command){
         setTimeout(loadConsoleText, 100)
     }, "text");
 }
-
-function isTextSelected(input){
-    var startPos = input.selectionStart;
-    var endPos = input.selectionEnd;
-    var doc = document.selection;
-
-    if(doc && doc.createRange().text.length != 0){
-       return true;
-    }else if (!doc && input.text().substring(startPos,endPos).length != 0){
-       return true;
-    }
-    return false;
- }

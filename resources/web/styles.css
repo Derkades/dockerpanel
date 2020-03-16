@@ -48,34 +48,34 @@ header {
   background-color: var(--tertiary-color);
 }
 
-#buttonStart {
+#button-start {
   background-color: var(--button-start-background-color);
   color: var(--button-start-text-color);
 }
 
-#buttonStart:hover {
+#button-start:hover {
   background-color: var(--button-start-hover-background-color);
   color: var(--button-start-hover-text-color);
 }
 
-#buttonRestart {
+#button-restart {
   background-color: var(--button-restart-background-color);
   color: var(--button-restart-text-color);
 }
 
-#buttonRestart:hover {
+#button-restart:hover {
   background-color: var(--button-restart-hover-background-color);
   color: var(--button-restart-hover-text-color);
 }
 
-#buttonKill {
-  background-color: var(--button-kill-background-color);
-  color: var(--button-kill-text-color);
+#button-stop {
+  background-color: var(--button-stop-background-color);
+  color: var(--button-stop-text-color);
 }
 
-#buttonKill:hover {
-  background-color: var(--button-kill-hover-background-color);
-  color: var(--button-kill-hover-text-color);
+#button-stop:hover {
+  background-color: var(--button-stop-hover-background-color);
+  color: var(--button-stop-hover-text-color);
 }
 
   /* Indicators */
@@ -141,7 +141,7 @@ nav#containerNav {
 }
 
 .list-group-item {
-  border-radius: 0px !important; 
+  border-radius: 0px !important;
   border-width: 1px 0px 0px 0px;
 }
 
@@ -202,7 +202,7 @@ span.terminal-status {
   width: 100%;
   height: 100%;
   display: inline-block;
-  
+
 }
 
 .btn {
