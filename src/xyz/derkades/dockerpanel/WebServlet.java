@@ -45,7 +45,9 @@ public class WebServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-		System.out.println("GET " + request.getRequestURI());
+		if ("true".equals(System.getenv("DEBUG"))) {
+			System.out.println("GET " + request.getRequestURI());
+		}
 
 		String uri = request.getRequestURI();
 		if (uri.contains("..")) {
