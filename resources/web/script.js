@@ -56,6 +56,23 @@ $(document).ready(function() {
         }, "text");
     });
 
+    $('#button-restart').click(function() {
+        var params = {
+            id: window.selectedContainerId
+        };
+
+        toastr.info("Restarting&mldr;");
+
+        $.get('/api/restart_container', params, function(text) {
+            if (text == "ok") {
+                toastr.success("Container restarted");
+                loadConsoleText();
+            } else {
+                toastr.error("An error occured while restarting the container");
+            }
+        }, "text");
+    });
+
     $('.terminal-input-form').keypress(function(e) {
         if (e.keyCode == 13) {
             if (!$('.terminal-input-form').val()){
