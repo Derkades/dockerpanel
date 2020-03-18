@@ -113,13 +113,13 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlet</artifactId>
-			<version>9.4.26.v20200117</version>
+			<version>9.4.27.v20200227</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.6.2</version>
+			<version>1.7.30</version>
 		</dependency>
 
 	</dependencies>
