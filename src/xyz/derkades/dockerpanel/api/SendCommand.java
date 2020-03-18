@@ -43,6 +43,11 @@ public class SendCommand extends ApiMethod {
 			return;
 		}
 
+		if (!container.getState().equals("running")) {
+			response.getWriter().print("offline");
+			return;
+		}
+
 		// No need to do anything with stdout
 		final ResultCallback.Adapter<Frame> callback = new ResultCallback.Adapter<Frame>() {
 			@Override public void onError(final Throwable throwable) {

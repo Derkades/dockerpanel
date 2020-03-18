@@ -240,6 +240,8 @@ function sendConsoleCommand(command){
     $.get('/api/send_command', params, function(text) {
         if (text == "ok") {
             toastr.success("Command sent");
+        } else if (text == "offline") {
+            toastr.warning("Cannot send command, the container is offline.");
         } else if (text == "timeout") {
             toastr.error("Request timed out: did not receive a response from docker in time.");
         } else {
