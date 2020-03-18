@@ -195,7 +195,7 @@ function loadConsoleText() {
             const isScrolledToBottom = term.scrollHeight - term.clientHeight <= term.scrollTop + 1;
             $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
                 if (isScrolledToBottom) {
-                    term.scrollTop(term.scrollHeight);
+                    term.scrollTop = term.scrollHeight;
                 }
             });
         } else {
