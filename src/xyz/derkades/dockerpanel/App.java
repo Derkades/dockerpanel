@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
+
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.core.DockerClientImpl;
@@ -142,6 +144,31 @@ public class App {
 
 	public static String getTheme() {
 		return theme;
+	}
+
+	public static void writeResource(final HttpServletResponse response, final String path) throws IOException {
+		try (InputStream stream = App.class.getResourceAsStream(path)){
+			if (stream == null) {
+				response.getWriter().write("Resource not found: " + path);
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+
+			IOUtils.copy(stream, response.getOutputStream());
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+
+		if (path.endsWith(".js")) {
+			response.setContentType("application/javascript");
+		} else if (path.endsWith(".html")){
+			response.setContentType("text/html");
+		} else if (path.endsWith(".css")){
+			response.setContentType("text/css");
+		} else if (path.endsWith(".svg")) {
+			response.setContentType("image/svg+xml");
+		}
+
+		response.setCharacterEncoding("UTF-8");
 	}
 
 }

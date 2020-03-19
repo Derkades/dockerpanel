@@ -1,22 +1,23 @@
 package xyz.derkades.dockerpanel;
 
+@Deprecated
 public class ThreadBlocker {
-	
+
 	boolean block = true;
-	
+
 	public void block() {
-		block = true;
-		while (block) {
+		this.block = true;
+		while (this.block) {
 			try {
 				Thread.sleep(10);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	public void done() {
-		block = false;
+		this.block = false;
 	}
 
 }
