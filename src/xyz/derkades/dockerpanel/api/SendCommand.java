@@ -3,7 +3,6 @@ package xyz.derkades.dockerpanel.api;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,19 +54,18 @@ public class SendCommand extends ApiMethod {
 			}
 		};
 
-		final PipedOutputStream out = new PipedOutputStream();
-		final PipedInputStream in = new PipedInputStream(out);
+		try (final PipedOutputStream out = new PipedOutputStream()) {
+			final PipedInputStream in = new PipedInputStream(out);
 
-		App.docker().attachContainerCmd(container.getId()).withFollowStream(true)
-				.withStdIn(in).exec(callback);
+			App.docker().attachContainerCmd(container.getId()).withFollowStream(true)
+					.withStdIn(in).exec(callback);
 
-		out.write((command + "\n").getBytes());
-		out.flush();
-		out.close();
-		callback.close();
-
-		if (!callback.awaitCompletion(10, TimeUnit.SECONDS)) {
-			response.getWriter().println("timeout");
+			out.write((command + "\n").getBytes());
+			out.flush();
+			out.close();
+			callback.close();
+		} finally {
+			callback.close();
 		}
 
 		response.getWriter().print("ok");
