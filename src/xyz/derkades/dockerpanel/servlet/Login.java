@@ -27,7 +27,9 @@ public class Login extends HttpServlet {
 			session.setAttribute("password", password);
 			response.setHeader("Location", "/");
 			response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+			response.getWriter().println("Successful login from " + request.getRemoteAddr());
 		} else {
+			response.getWriter().println("Login with invalid password denied from " + request.getRemoteAddr());
 			response.getWriter().println("Invalid password");
 		}
 	}

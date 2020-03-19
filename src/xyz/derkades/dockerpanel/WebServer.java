@@ -13,6 +13,12 @@ public class WebServer {
 
 	private Server server;
 
+	private final int port;
+
+	WebServer() {
+		this.port = 8080;
+	}
+
 	public void start() {
 		this.server = new Server();
 
@@ -25,7 +31,7 @@ public class WebServer {
 		this.server.setHandler(handler);
 
 		final ServerConnector connector = new ServerConnector(this.server);
-		connector.setPort(8080);
+		connector.setPort(this.port);
 		this.server.addConnector(connector);
 
 		new Thread() {
@@ -34,10 +40,11 @@ public class WebServer {
 			public void run() {
 				try {
 					WebServer.this.server.start();
-					System.out.println("Listening on port 8080");
-					WebServer.this.server.join(); // Join with main thread
+//					System.out.println("Listening on port " + WebServer.this.port);
+					WebServer.this.server.join();
 				} catch (final Exception e) {
 					System.out.println("An error occured while starting webserver: " + e.getMessage());
+					System.exit(1); // TODO don't do this
 				}
 			}
 
@@ -45,6 +52,10 @@ public class WebServer {
 	}
 
 	public void stop() {
+		if (this.server.isStopped()) {
+			return;
+		}
+
 		try {
 			this.server.setStopAtShutdown(true);
 			this.server.stop();
@@ -54,12 +65,14 @@ public class WebServer {
 		}
 	}
 
-	boolean isStopped() {
-		return this.server.isStopped();
-	}
-
-	boolean isStarted() {
-		return this.server.isStarted();
+	public void waitForStart() {
+		while (!this.server.isStarted()) {
+			try {
+				Thread.sleep(100);
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -22,7 +22,7 @@ public class Api extends HttpServlet {
 
 			if (session.getAttribute("password") == null ||
 					!session.getAttribute("password").equals(System.getenv("PASSWORD"))) {
-				response.getWriter().print("Unauthorized");
+				response.getWriter().print("unauthorized");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				return;
 			}

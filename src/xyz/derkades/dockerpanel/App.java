@@ -22,12 +22,14 @@ public class App {
 	private static WebServer server;
 	private static DockerClient docker;
 	private static String theme;
+	private static Gson gson;
 	public static int tailLines;
 
 	public static void main(final String[] args) throws Exception {
 		final long startTime = System.currentTimeMillis();
 		System.out.println("Starting.. ");
 
+		// Disable annoying jetty messages
 		System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
 		System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
 		System.setProperty("org.eclipse.jetty.util.log.announce", "false");
@@ -36,48 +38,58 @@ public class App {
 
 		tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
 
+		gson = new Gson();
+
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				System.out.println("Stopping server..");
-				if (server != null && !server.isStopped()) {
+				if (server != null) {
 					server.stop();
 				}
 				System.out.println("bye!");
 			}
 		});
 
+		server = new WebServer();
+		server.start();
+
+		// Server is starting async, meanwhile connect to docker
+
 		final File docksock = new File("/var/run/docker.sock");
 		if (!docksock.exists()) {
-			System.err.println("Docker socket not found");
+			System.out.println("Docker socket not found.");
+			System.out.println("Make sure docker is installed and listening on unix:///var/run/docker.sock");
+			System.out.println("If you are running dockerpanel in a docker container, make sure to mount the file in the container.");
 			System.exit(1);
 			return;
 		}
 
-		docker = DockerClientImpl.getInstance()
-			    .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
+		try {
+			docker = DockerClientImpl.getInstance()
+				    .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
 
-		System.out.println("Connected to docker version " + docker.versionCmd().exec().getVersion() + " on " + docker.versionCmd().exec().getOperatingSystem());
+			System.out.println("Connected to docker version " + docker.versionCmd().exec().getVersion() + " on " + docker.versionCmd().exec().getOperatingSystem());
+		} catch (final Exception e) {
+			System.out.println("Failed to connect to docker: " + e.getMessage());
+			System.exit(1);
+			return;
+		}
 
-		server = new WebServer();
-		server.start();
 
 		System.out.println("\nContainers: ");
 		for (final Container container : App.getContainers()) {
 			System.out.println(" - " + containerName(container));
 		}
+		System.out.println("To change which docker containers are displayed, set the CONTAINER_WHITELIST environment variable.");
+
+		if (System.getenv("PASSWORD") == null) {
+			System.out.println("\nWARNING: Password authentication is disabled. Set a password using the PASSWORD environment variable.");
+		}
 
 		System.out.println();
 
 		// Wait for webserver to start
-
-		while (!server.isStarted()) {
-			try {
-				Thread.sleep(100);
-			} catch (final InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		server.waitForStart();
 
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
 	}
@@ -95,7 +107,7 @@ public class App {
 	}
 
 	public static String containerName(final Container container) throws IOException {
-//		return container.inspect().asJsonObject().getString("Name").substring(1);
+		// TODO safety checks: does array index 0 exist and is length > 1?
 		return container.getNames()[0].substring(1);
 	}
 
@@ -112,12 +124,8 @@ public class App {
 		return docker;
 	}
 
-	public static String toJson(final Object object) {
-		return new Gson().toJson(object);
-	}
-
 	public static void writeJson(final HttpServletResponse response, final Object object) throws IOException {
-		response.getWriter().println(toJson(object));
+		response.getWriter().println(gson.toJson(object));
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.setContentType("text/json");
 	}
