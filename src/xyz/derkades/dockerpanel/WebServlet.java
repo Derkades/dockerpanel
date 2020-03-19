@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,11 +59,7 @@ public class WebServlet extends HttpServlet {
 		if (uri.startsWith("/api")) {
 			callApiMethod(uri.substring(5), request, response);
 		} else if (uri.equals("/theme.css")) {
-			try (InputStream stream = App.class.getResourceAsStream("/themes/" + App.getTheme() + ".css")){
-				IOUtils.copy(stream, response.getOutputStream());
-				response.setStatus(HttpServletResponse.SC_OK);
-				response.setContentType("text/css");
-			};
+			sendTheme(request, response);
 		} else {
 			if (uri.endsWith("/")) {
 				uri += "index.html";
@@ -89,6 +86,46 @@ public class WebServlet extends HttpServlet {
 			} else if (uri.endsWith(".svg")) {
 				response.setContentType("image/svg+xml");
 			}
+		}
+	}
+
+	private void sendTheme(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		String theme = null;
+
+		if (request.getCookies() != null) {
+			for (final Cookie cookie : request.getCookies()) {
+				if (cookie.getName().equals("theme")) {
+					theme = cookie.getValue();
+					break;
+				}
+			}
+		}
+
+		if (theme == null) {
+			// Theme cookie is not set, fall back to environment variable setting
+			theme = App.getTheme();
+		} else {
+			// User theme is set, check if it's valid
+			try (InputStream stream = App.class.getResourceAsStream("/themes/" + theme + ".css")) {
+				if (stream == null) {
+					// User set theme is invalid. Clear user cookie
+					final Cookie cookie = new Cookie("theme", null);
+					cookie.setMaxAge(0);
+					response.addCookie(cookie);
+
+					// Use global theme setting
+					theme = App.getTheme();
+				}
+			}
+		}
+
+		try (InputStream stream =  App.class.getResourceAsStream("/themes/" + theme + ".css")) {
+			IOUtils.copy(stream, response.getOutputStream());
+			response.setStatus(HttpServletResponse.SC_OK);
+			response.setContentType("text/css");
+		} catch (final IOException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			throw e;
 		}
 	}
 
