@@ -63,7 +63,6 @@ public class SendCommand extends ApiMethod {
 			out.write((command + "\n").getBytes());
 			out.flush();
 			out.close();
-			callback.close();
 		} finally {
 			callback.close();
 		}
