@@ -35,7 +35,7 @@ public class StopContainer extends ApiMethod {
 
 		try {
 //			container.stop();
-			App.docker().stopContainerCmd(container.getId()).exec();
+			App.docker().stopContainerCmd(container.getId()).withTimeout(30).exec();
 			response.getWriter().print("ok");
 		} catch (final NotModifiedException e) {
 			response.getWriter().print("already stopped");

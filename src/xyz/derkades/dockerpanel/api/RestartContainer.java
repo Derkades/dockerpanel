@@ -33,7 +33,7 @@ public class RestartContainer extends ApiMethod {
 		}
 
 		try {
-			App.docker().restartContainerCmd(container.getId()).exec();
+			App.docker().restartContainerCmd(container.getId()).withtTimeout(30).exec();
 			response.getWriter().print("ok");
 		} catch (final IOException e) {
 			response.getWriter().print("error");
