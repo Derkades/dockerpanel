@@ -57,6 +57,20 @@ public class App {
 		
 		disableInput = "true".equals(System.getenv("DISABLE_INPUT"));
 		disableButtons = "true".equals(System.getenv("DISABLE_BUTTONS"));
+		
+		final int port;
+		try {
+			port = System.getenv("PORT") == null ? 80 : Integer.parseInt(System.getenv("PORT"));
+			if (port < 1 || port > 65535) {
+				System.out.println("PORT is set to a number outside of the valid port range");
+				System.exit(1);
+				return;
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("PORT is not a valid number");
+			System.exit(1);
+			return;
+		}
 
 		gson = new Gson();
 
@@ -70,7 +84,7 @@ public class App {
 			}
 		});
 
-		server = new WebServer();
+		server = new WebServer(port);
 		server.start();
 
 		// Server is starting async, meanwhile connect to docker

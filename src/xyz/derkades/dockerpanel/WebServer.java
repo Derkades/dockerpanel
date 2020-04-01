@@ -15,8 +15,8 @@ public class WebServer {
 
 	private final int port;
 
-	WebServer() {
-		this.port = 8080;
+	WebServer(int port) {
+		this.port = port;
 	}
 
 	public void start() {
@@ -44,6 +44,9 @@ public class WebServer {
 					WebServer.this.server.join();
 				} catch (final Exception e) {
 					System.out.println("An error occured while starting webserver: " + e.getMessage());
+					if (e.getMessage().equals("Permission denied") && port < 1024) {
+						System.out.println("Try using a port number >1024");
+					}
 					System.exit(1); // TODO don't do this
 				}
 			}
