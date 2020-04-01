@@ -18,6 +18,9 @@ FROM openjdk:11-jre
 
 COPY target/dockerpanel-dev.jar /dockerpanel.jar
 
+# Temporarily disabled until https://github.com/Derkades/dockerpanel/issues/25 is fixed
+ENV DISABLE_INPUT=true
+
 EXPOSE 8080
 
 ENTRYPOINT [ "java", "-jar", "/dockerpanel.jar" ]
