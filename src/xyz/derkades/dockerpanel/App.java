@@ -124,6 +124,7 @@ public class App {
 		server.waitForStart();
 
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
+		System.out.println("Listening for requests on port " + port);
 	}
 
 	public static List<Container> getContainers() {
