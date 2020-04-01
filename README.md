@@ -29,6 +29,9 @@ Environment variables:
 * `THEME` - Web UI theme, go [here](https://github.com/Derkades/dockerpanel/tree/master/resources/themes) for a list of themes.
 * `CONTAINER_WHITELIST` - Space separated list of containers to show in the panel. Without this environment variable set, all containers are shown.
 * `TAIL_LINES` - Number of lines to show in the console (default `100`).
+* `DISABLE_INPUT` - Set to `true` to disable terminal input (usually default `false`, but for now in the docker container set to `true` because of [#25](https://github.com/Derkades/dockerpanel/issues/25)).
+* `DISABLE_BUTTONS` - Set to `true` to disable start/stop/restart buttons (default `false`).
+* `PORT` - Port number for embedded webserver (default `80`).
 
 ## docker-compose example
 
