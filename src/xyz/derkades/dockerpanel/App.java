@@ -24,6 +24,7 @@ public class App {
 	private static String theme;
 	private static Gson gson;
 	public static int tailLines;
+	public static int timeout;
 	public static boolean disableInput;
 	public static boolean disableButtons;
 
@@ -38,7 +39,22 @@ public class App {
 
 		loadTheme();
 
-		tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
+		try {
+			tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
+		} catch (NumberFormatException e) {
+			System.out.println("TAIL_LINES is not a valid number");
+			System.exit(1);
+			return;
+		}
+	
+		try {
+			timeout = System.getenv("TIMEOUT") == null ? 10 : Integer.parseInt(System.getenv("TIMEOUT"));
+		} catch (NumberFormatException e) {
+			System.out.println("TIMEOUT is not a valid number");
+			System.exit(1);
+			return;
+		}
+		
 		disableInput = "true".equals(System.getenv("DISABLE_INPUT"));
 		disableButtons = "true".equals(System.getenv("DISABLE_BUTTONS"));
 
