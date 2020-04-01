@@ -24,6 +24,8 @@ public class App {
 	private static String theme;
 	private static Gson gson;
 	public static int tailLines;
+	public static boolean disableInput;
+	public static boolean disableButtons;
 
 	public static void main(final String[] args) throws Exception {
 		final long startTime = System.currentTimeMillis();
@@ -37,6 +39,8 @@ public class App {
 		loadTheme();
 
 		tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
+		disableInput = "true".equals(System.getenv("DISABLE_INPUT"));
+		disableButtons = "true".equals(System.getenv("DISABLE_BUTTONS"));
 
 		gson = new Gson();
 

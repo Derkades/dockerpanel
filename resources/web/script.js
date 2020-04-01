@@ -23,7 +23,7 @@ $(document).ready(function() {
             id: window.selectedContainerId
         };
 
-        toastr.info("Starting&mldr;");
+        // toastr.info("Starting&mldr;");
 
         $.get('/api/start_container', params, function(text) {
             if (text == "ok") {
@@ -31,6 +31,8 @@ $(document).ready(function() {
                 loadConsoleText();
             } else if (text == "already started"){
                 toastr.warning("This container is already started");
+            } else if (text == "disabled") {
+                toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while starting the container");
             }
@@ -50,6 +52,8 @@ $(document).ready(function() {
                 loadConsoleText();
             } else if (text == "already stopped"){
                 toastr.warning("This container is already stopped");
+            } else if (text == "disabled") {
+                toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while stopping the container");
             }
@@ -67,6 +71,8 @@ $(document).ready(function() {
             if (text == "ok") {
                 toastr.success("Container restarted");
                 loadConsoleText();
+            } else if (text == "disabled") {
+                toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while restarting the container");
             }
@@ -242,6 +248,8 @@ function sendConsoleCommand(command){
             toastr.success("Command sent");
         } else if (text == "offline") {
             toastr.warning("Cannot send command, the container is offline.");
+        } else if (text == "disabled") {
+            toastr.warning("Command sending is disabled");
         } else if (text == "timeout") {
             toastr.error("Request timed out: did not receive a response from docker in time.");
         } else {

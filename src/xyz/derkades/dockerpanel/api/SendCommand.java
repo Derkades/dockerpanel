@@ -22,6 +22,11 @@ public class SendCommand extends ApiMethod {
 	@Override
 	public void call(final Map<String, String> parameters, final HttpServletResponse response) throws Exception {
 		response.setContentType("text/plain");
+		
+		if (App.disableInput) {
+			response.getWriter().print("disabled");
+			return;
+		}
 
 		if (!parameters.containsKey("id")) {
 			response.getWriter().println("Missing parameter id");

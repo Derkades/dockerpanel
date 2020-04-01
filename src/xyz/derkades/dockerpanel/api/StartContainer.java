@@ -20,6 +20,11 @@ public class StartContainer extends ApiMethod {
 	@Override
 	public void call(final Map<String, String> parameters, final HttpServletResponse response) throws Exception {
 		response.setContentType("text/plain");
+		
+		if (App.disableButtons) {
+			response.getWriter().print("disabled");
+			return;
+		}
 
 		if (!parameters.containsKey("id")) {
 			response.getWriter().println("Mising parameter id");
