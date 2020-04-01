@@ -71,7 +71,7 @@ public class WebServer {
 	public void waitForStart() {
 		while (!this.server.isStarted()) {
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
