@@ -84,11 +84,6 @@ public class App {
 			}
 		});
 
-		server = new WebServer(port);
-		server.start();
-
-		// Server is starting async, meanwhile connect to docker
-
 		final File docksock = new File("/var/run/docker.sock");
 		if (!docksock.exists()) {
 			System.out.println("Docker socket not found.");
@@ -108,7 +103,10 @@ public class App {
 			System.exit(1);
 			return;
 		}
-
+		
+		// Docker is initialized, web server can now be started async		
+		server = new WebServer(port);
+		server.start();
 
 		System.out.println("\nContainers: ");
 		for (final Container container : App.getContainers()) {
@@ -122,7 +120,7 @@ public class App {
 
 		System.out.println();
 
-		// Wait for webserver to start
+		// Wait for webserver to start if not done yet
 		server.waitForStart();
 
 		System.out.println("Started (" + (System.currentTimeMillis() - startTime) + " ms)");
