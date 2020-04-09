@@ -82,7 +82,7 @@ $(document).ready(function() {
     $('.terminal-input-form').keypress(function(e) {
         if (e.keyCode == 13) {
             if (!$('.terminal-input-form').val()){
-                toastr.warning("Cannot send empty command");
+                toastr.warning("Cannot send empty input");
                 return;
             }
             sendConsoleCommand($('.terminal-input-form').val());
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
     $('#command-send-button').click(function(e) {
         if (!$('.terminal-input-form').val()){
-            toastr.warning("Cannot send empty command");
+            toastr.warning("Cannot send empty input");
             return;
         }
         sendConsoleCommand($('.terminal-input-form').val());
@@ -247,9 +247,9 @@ function sendConsoleCommand(command){
         if (text == "ok") {
             toastr.success("Command sent");
         } else if (text == "offline") {
-            toastr.warning("Cannot send command, the container is offline.");
+            toastr.warning("Cannot send input, the container is offline.");
         } else if (text == "disabled") {
-            toastr.warning("Command sending is disabled");
+            toastr.warning("Sending to input is disabled");
         } else if (text == "timeout") {
             toastr.error("Request timed out: did not receive a response from docker in time.");
         } else {
