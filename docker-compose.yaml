@@ -4,7 +4,7 @@ services:
 
   dockerpanel:
     image: derkades/dockerpanel
-    ports: ['8080:8080']
+    ports: ['8080:80']
     volumes: ['/var/run/docker.sock:/var/run/docker.sock']
     environment:
       CONTAINER_WHITELIST: proxy smp
