@@ -41,15 +41,15 @@ public class App {
 
 		try {
 			tailLines = System.getenv("TAIL_LINES") == null ? 100 : Integer.parseInt(System.getenv("TAIL_LINES"));
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			System.out.println("TAIL_LINES is not a valid number");
 			System.exit(1);
 			return;
 		}
 	
 		try {
-			timeout = System.getenv("TIMEOUT") == null ? 10 : Integer.parseInt(System.getenv("TIMEOUT"));
-		} catch (NumberFormatException e) {
+			timeout = System.getenv("TIMEOUT") == null ? 30 : Integer.parseInt(System.getenv("TIMEOUT"));
+		} catch (final NumberFormatException e) {
 			System.out.println("TIMEOUT is not a valid number");
 			System.exit(1);
 			return;
@@ -66,7 +66,7 @@ public class App {
 				System.exit(1);
 				return;
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			System.out.println("PORT is not a valid number");
 			System.exit(1);
 			return;
@@ -104,7 +104,7 @@ public class App {
 			return;
 		}
 		
-		// Docker is initialized, web server can now be started async		
+		// Docker is initialized, web server can now be started async
 		server = new WebServer(port);
 		server.start();
 
