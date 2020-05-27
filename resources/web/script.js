@@ -185,30 +185,27 @@ function loadConsoleText() {
     $.get(  '/api/get_container_status',
             { id: window.selectedContainerId },
             function(text) {
-
         if (text == "running") {
             $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-
-            /*
-             * The container is running, load logs for this container. Before
-             * loading new text into the terminal, check if the user is scrolled
-             * to the bottom. If they are, after the text is loaded, scroll to
-             * the bottom again so div stays scrolled to the bottom like terminals
-             * should. If the user has intentionally scrolled up to have a look
-             * at something, the scroll position is not modified.
-             */
-            const term = document.getElementsByClassName("terminal-logs")[0];
-            const isScrolledToBottom = term.scrollHeight - term.clientHeight <= term.scrollTop + 1;
-            $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
-                if (isScrolledToBottom) {
-                    term.scrollTop = term.scrollHeight;
-                }
-            });
         } else {
             $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-            $('.terminal-logs').text("offline");
         }
     }, "text");
+
+    /*
+    * Before loading new text into the terminal, check if the user is scrolled
+    * to the bottom. If they are, after the text is loaded, scroll to
+    * the bottom again so div stays scrolled to the bottom like terminals
+    * should. If the user has intentionally scrolled up to have a look
+    * at something, the scroll position is not modified.
+    */
+    const term = document.getElementsByClassName("terminal-logs")[0];
+    const isScrolledToBottom = term.scrollHeight - term.clientHeight <= term.scrollTop + 1;
+    $('.terminal-logs').load('/api/get_container_logs?id=' + window.selectedContainerId, null, function(){
+        if (isScrolledToBottom) {
+            term.scrollTop = term.scrollHeight;
+        }
+    });
 }
 
 function setSelectedContainer(id, name) {
