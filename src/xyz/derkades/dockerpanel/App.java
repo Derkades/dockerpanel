@@ -13,8 +13,11 @@ import org.apache.commons.io.IOUtils;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
-import com.github.dockerjava.okhttp.OkHttpDockerCmdExecFactory;
+import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
+import com.github.dockerjava.transport.DockerHttpClient;
 import com.google.gson.Gson;
 
 public class App {
@@ -94,9 +97,13 @@ public class App {
 		}
 
 		try {
-			docker = DockerClientImpl.getInstance()
-				    .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
-
+//			docker = DockerClientImpl.getInstance()
+//				    .withDockerCmdExecFactory(new OkHttpDockerCmdExecFactory());
+			final DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
+					.withDockerHost("unix:///var/run/docker.sock")
+					.build();
+			final DockerHttpClient httpClient = new ApacheDockerHttpClient.Builder().dockerHost(config.getDockerHost()).build();
+			docker = DockerClientImpl.getInstance(config, httpClient);
 			System.out.println("Connected to docker version " + docker.versionCmd().exec().getVersion() + " on " + docker.versionCmd().exec().getOperatingSystem());
 		} catch (final Exception e) {
 			System.out.println("Failed to connect to docker: " + e.getMessage());

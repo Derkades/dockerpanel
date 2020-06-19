@@ -100,8 +100,14 @@
 
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
-			<artifactId>docker-java-transport-okhttp</artifactId>
-			<version>3.2.1</version>
+			<artifactId>docker-java-transport-httpclient5</artifactId>
+			<version>3.2.3</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java-core</artifactId>
+			<version>3.2.3</version>
 		</dependency>
 
 		<dependency>
