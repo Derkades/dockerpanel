@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.io.IOUtils;
 
 import com.github.dockerjava.api.DockerClient;
@@ -30,6 +33,7 @@ public class App {
 	public static int timeout;
 	public static boolean disableInput;
 	public static boolean disableButtons;
+	private static final Map<String, String> PLACEHOLDERS = new HashMap<>();
 
 	public static void main(final String[] args) throws Exception {
 		final long startTime = System.currentTimeMillis();
@@ -49,7 +53,7 @@ public class App {
 			System.exit(1);
 			return;
 		}
-	
+
 		try {
 			timeout = System.getenv("TIMEOUT") == null ? 30 : Integer.parseInt(System.getenv("TIMEOUT"));
 		} catch (final NumberFormatException e) {
@@ -57,10 +61,10 @@ public class App {
 			System.exit(1);
 			return;
 		}
-		
+
 		disableInput = "true".equals(System.getenv("DISABLE_INPUT"));
 		disableButtons = "true".equals(System.getenv("DISABLE_BUTTONS"));
-		
+
 		final int port;
 		try {
 			port = System.getenv("PORT") == null ? 80 : Integer.parseInt(System.getenv("PORT"));
@@ -110,7 +114,7 @@ public class App {
 			System.exit(1);
 			return;
 		}
-		
+
 		// Docker is initialized, web server can now be started async
 		server = new WebServer(port);
 		server.start();
@@ -126,6 +130,8 @@ public class App {
 		}
 
 		System.out.println();
+
+		setPlaceholders();
 
 		// Wait for webserver to start if not done yet
 		server.waitForStart();
@@ -194,29 +200,66 @@ public class App {
 		return theme;
 	}
 
+	private static void setPlaceholders() {
+		final String title = System.getenv("TITLE");
+		PLACEHOLDERS.put("{{TITLE}}", title == null ? "DockerPanel" : title);
+	}
+
+	private static final Map<String, byte[]> PAGES = new HashMap<>();
+
 	public static void writeResource(final HttpServletResponse response, final String path) throws IOException {
-		try (InputStream stream = App.class.getResourceAsStream(path)){
+		boolean filter;
+		if (path.endsWith(".js")) {
+			response.setContentType("application/javascript");
+			response.setCharacterEncoding("UTF-8");
+			filter = true;
+		} else if (path.endsWith(".html")){
+			response.setContentType("text/html");
+			response.setCharacterEncoding("UTF-8");
+			filter = true;
+		} else if (path.endsWith(".css")){
+			response.setContentType("text/css");
+			response.setCharacterEncoding("UTF-8");
+			filter = true;
+		} else if (path.endsWith(".svg")) {
+			response.setContentType("image/svg+xml");
+			filter = false;
+		} else {
+			filter = false;
+		}
+
+		try (InputStream stream = App.class.getResourceAsStream(path)) {
 			if (stream == null) {
 				response.getWriter().write("Resource not found: " + path);
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				return;
 			}
 
-			IOUtils.copy(stream, response.getOutputStream());
+			if (filter) {
+				byte[] page = PAGES.get(path);
+				if (page == null) {
+					page = buildPage(path);
+					PAGES.put(path, page);
+				}
+
+				IOUtils.write(page, response.getOutputStream());
+			} else {
+				IOUtils.copy(stream, response.getOutputStream());
+			}
+
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
+	}
 
-		if (path.endsWith(".js")) {
-			response.setContentType("application/javascript");
-		} else if (path.endsWith(".html")){
-			response.setContentType("text/html");
-		} else if (path.endsWith(".css")){
-			response.setContentType("text/css");
-		} else if (path.endsWith(".svg")) {
-			response.setContentType("image/svg+xml");
+	private static byte[] buildPage(String path) throws IOException {
+		try (InputStream stream = App.class.getResourceAsStream(path)) {
+			final byte[] buf = stream.readAllBytes();
+			String string = StringUtils.newStringUtf8(buf);
+			for (final Map.Entry<String, String> placeholder : PLACEHOLDERS.entrySet()) {
+				string = string.replace(placeholder.getKey(), placeholder.getValue());
+			}
+			return StringUtils.getBytesUtf8(string);
 		}
-
-		response.setCharacterEncoding("UTF-8");
 	}
 
 }
