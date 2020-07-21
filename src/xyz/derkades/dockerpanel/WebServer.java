@@ -7,6 +7,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import xyz.derkades.dockerpanel.servlet.Api;
 import xyz.derkades.dockerpanel.servlet.Index;
 import xyz.derkades.dockerpanel.servlet.Login;
+import xyz.derkades.dockerpanel.servlet.Status;
 import xyz.derkades.dockerpanel.servlet.Theme;
 
 public class WebServer {
@@ -27,6 +28,7 @@ public class WebServer {
 		handler.addServlet(Theme.class, "/theme");
 		handler.addServlet(Index.class, "/");
 		handler.addServlet(Api.class, "/api/*");
+		handler.addServlet(Status.class, "/status");
 
 		this.server.setHandler(handler);
 
