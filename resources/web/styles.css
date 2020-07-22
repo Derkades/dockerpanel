@@ -35,6 +35,11 @@ header {
   /* Cards */
 .card {
   border-radius: var(--card-border-radius);
+  background-color: var(--card-background-color);
+}
+
+nav > div > div > div > .list-group > button {
+  background-color: var(--card-background-color);
 }
 
   /* Buttons */

@@ -15,12 +15,14 @@
   --status-offline-color: hsla(0, 72%, 60%, 1.00);
   --status-offline-box-shadow: 0px 0px 10px 2px hsla(0, 72%, 60%, 1.00);
 
-
   /* colors for the terminal window */
   --terminal-bg-color: hsla(0, 0%, 10%, 1.00);
   --terminal-txt-color: hsla(0, 0%, 70%, 1.00);
   --terminal-wrn-color: hsla(39, 75%, 50%, 1.00);
   --terminal-err-color: hsla(0, 75%, 58%, 1.00);
+
+  /* colors for cards and navigation */
+  --card-background-color: white;
 
   /* colors for the buttons */
   --button-start-background-color: hsla(102, 65%, 45%, 1.00);
