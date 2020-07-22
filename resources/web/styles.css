@@ -16,7 +16,7 @@ a:hover {
 }
 
 a:visited, a:active {
-  color: var(--tertiary-color);
+  color: var(--accent-color);
 }
 
   /* Header */
