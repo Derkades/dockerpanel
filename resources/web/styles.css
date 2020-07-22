@@ -53,6 +53,10 @@ nav > div > div > div > .list-group > button {
   background-color: var(--tertiary-color);
 }
 
+button {
+  color: var(--text-color) !important;
+}
+
 #button-start {
   background-color: var(--button-start-background-color);
   color: var(--button-start-text-color);
