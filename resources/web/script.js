@@ -109,12 +109,14 @@ $(document).ready(function() {
     setInterval(loadConsoleText, 1500);
     loadConsoleText();
 
-    setInterval(loadNav, 5000);
+    setInterval(loadNav, 2000);
     loadNav();
 });
 
 function loadNav() {
-    $.get('/api/get_containers', function(data) {
+    $.getJSON('/api/get_containers', function(containers) {
+        window.containerData = containers;
+
         var text = "";
         /*
          * Generate a string of HTML buttons for each container. Each button has a
@@ -124,31 +126,22 @@ function loadNav() {
          * the status color dots don't flicker. After adding all the buttons, the
          * status dots are updated asynchronously.
          */
-        $.each(data, function(id, name) {
-            previousStatusClass = $('#nav-container-' + id + '-status').hasClass('status-online') ? "status-online" : "status-offline";
-            text += '<button type="button" class="list-group-item list-group-item-action" ';
-            text += 'id="nav-container-' + id + '" ';
-            text += 'onclick="setSelectedContainer(&quot;' + id + '&quot;, &quot;' + name + '&quot;)">' + name;
-            text += '<span style="float: right;"><div class="circle ' + previousStatusClass + '" ';
-            text += 'id="nav-container-' + id + '-status"></div></span>';
+        // $.each(containers, function(containerId, containerInfo) {
+        for (var containerId in containers) {
+            var containerName = containers[containerId].name;
+            var containerState = containers[containerId].state;
+            var statusClass = containerState == "running" ? "status-online" : "status-offline";
+            text += '<button type="button" class="list-group-item list-group-item-action"';
+            text += 'id="nav-container-' + containerId + '" ';
+            text += 'onclick="setSelectedContainer(&quot;' + containerId + '&quot;, &quot;' + containerName + '&quot;)">' + containerName;
+            text += '<span style="float: right;"><div class="circle ' + statusClass + '" ';
+            text += 'id="nav-container-' + containerId + '-status"></div></span>';
             text += '</button>\n'
-
-            var params = {
-                id: id
-            };
-            // Load status afterwards, async
-            $.get('/api/get_container_status', params, function(text) {
-                if (text == "running") {
-                    $("#nav-container-" + id + "-status").removeClass('status-offline').addClass('status-online');
-                } else {
-                    $("#nav-container-" + id + "-status").removeClass('status-online').addClass('status-offline');
-                }
-            });
-        });
+        };
 
         $('#collapseContainerSpoiler > .list-group').html(text);
         setNavActive();
-    }, "json");
+    });
 }
 
 function loadConsoleText() {
@@ -161,7 +154,11 @@ function loadConsoleText() {
     if (!window.selectedContainerId) {
         $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
         $('.terminal-logs').text('');
+        return;
     }
+
+    var statusClass = window.containerData[window.selectedContainerId].state == "running" ? "status-online" : "status-offline";
+    $('#active-status-indicator').removeClass('status-offline status-online').addClass(statusClass);
 
     /*
      * If terminal output is paused, send a message. This message is shown
@@ -181,16 +178,6 @@ function loadConsoleText() {
         );
         return;
     }
-
-    $.get(  '/api/get_container_status',
-            { id: window.selectedContainerId },
-            function(text) {
-        if (text == "running") {
-            $('#active-status-indicator').removeClass('status-offline').addClass('status-online');
-        } else {
-            $('#active-status-indicator').removeClass('status-online').addClass('status-offline');
-        }
-    }, "text");
 
     /*
     * Before loading new text into the terminal, check if the user is scrolled

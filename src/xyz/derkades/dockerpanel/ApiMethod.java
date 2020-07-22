@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import xyz.derkades.dockerpanel.api.GetContainerLogs;
-import xyz.derkades.dockerpanel.api.GetContainerStatus;
 import xyz.derkades.dockerpanel.api.GetContainers;
 import xyz.derkades.dockerpanel.api.GetThemes;
 import xyz.derkades.dockerpanel.api.RestartContainer;
@@ -18,7 +17,6 @@ public abstract class ApiMethod {
 	public static final ApiMethod[] METHODS = {
 			new GetContainers(),
 			new GetContainerLogs(),
-			new GetContainerStatus(),
 			new GetThemes(),
 			new RestartContainer(),
 			new SendCommand(),
