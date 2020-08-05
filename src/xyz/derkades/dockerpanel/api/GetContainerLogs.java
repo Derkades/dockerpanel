@@ -56,6 +56,7 @@ public class GetContainerLogs extends ApiMethod {
 		App.docker().logContainerCmd(container.getId()).withTail(App.tailLines)
 				.withStdOut(true)
 				.withStdErr(true)
+				.withTimestamps("true".equals(System.getenv("TIMESTAMPS")))
 				.exec(callback);
 
 		if (!callback.awaitCompletion(10, TimeUnit.SECONDS)) {
