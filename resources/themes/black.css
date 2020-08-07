@@ -1,0 +1,45 @@
+:root {
+  /* Background, Accent & Text colors */
+  --background-color: black;
+  --accent-color: hsla(220, 60%, 60%, 1.00);
+  --text-color: #EEE;
+
+  /* More accent colors for headers & contrasts */
+  --secondary-color: hsla(220, 40%, 80%, 1.00);
+  --tertiary-color: rgb(46, 46, 46);
+
+  /* colors for the status indicators */
+  --status-online-color: hsla(110, 62%, 60%, 1.00);
+  --status-online-box-shadow: 0px 0px 10px 2px hsla(110, 62%, 60%, 1.00);
+  --status-offline-color: hsla(0, 72%, 60%, 1.00);
+  --status-offline-box-shadow: 0px 0px 10px 2px hsla(0, 72%, 60%, 1.00);
+
+  /* colors for the terminal window */
+  --terminal-bg-color: hsla(0, 0%, 10%, 1.00);
+  --terminal-txt-color: hsla(0, 0%, 70%, 1.00);
+  --terminal-wrn-color: hsla(39, 75%, 50%, 1.00);
+  --terminal-err-color: hsla(0, 75%, 58%, 1.00);
+
+  /* colors for cards and navigation */
+  --card-background-color: black;
+
+  /* colors for the buttons */
+  --button-start-background-color: hsla(102, 65%, 45%, 1.00);
+  --button-start-text-color: hsla(0, 0%, 100%, 1.00);
+  --button-start-hover-background-color: hsla(102, 65%, 35%, 1.00);
+  --button-start-hover-text-color: hsla(0, 0%, 80%, 1.00);
+
+  --button-restart-background-color: hsla(39, 75%, 45%, 1.00);
+  --button-restart-text-color: hsla(0, 0%, 100%, 1.00);
+  --button-restart-hover-background-color: hsla(39, 75%, 35%, 1.00);
+  --button-restart-hover-text-color: hsla(0, 0%, 80%, 1.00);
+
+  --button-stop-background-color: hsla(0, 75%, 45%, 1.00);
+  --button-stop-text-color: hsla(0, 0%, 100%, 1.00);
+  --button-stop-hover-background-color: hsla(0, 75%, 35%, 1.00);
+  --button-stop-hover-text-color: hsla(0, 0%, 80%, 1.00);
+
+  /* optional theming options */
+  --card-border-radius: 15px;
+  --button-border-radius: 50px;
+}
