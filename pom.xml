@@ -16,6 +16,7 @@
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<finalName>${project.name}</finalName> <!-- Real programmers don't use versioning -->
 
 		<resources>
 			<resource>
@@ -46,7 +47,9 @@
 						<filter>
 							<artifact>*:*</artifact>
 							<excludes>
-								<exclude>META-INF/</exclude>
+								<excludes>META-INF/*.SF</excludes>
+			                	<excludes>META-INF/*.DSA</excludes>
+			                	<excludes>META-INF/*.RSA</excludes>
 								<exclude>about.html</exclude>
 								<exclude>LICENSE</exclude>
 								<exclude>jetty-dir.css</exclude>
