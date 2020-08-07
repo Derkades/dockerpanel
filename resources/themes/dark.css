@@ -1,6 +1,6 @@
 :root {
   /* Background, Accent & Text colors */
-  --background-color: black;
+  --background-color: #151515;
   --accent-color: hsla(220, 60%, 60%, 1.00);
   --text-color: #EEE;
 
@@ -21,7 +21,7 @@
   --terminal-err-color: hsla(0, 75%, 58%, 1.00);
 
   /* colors for cards and navigation */
-  --card-background-color: #171717;
+  --card-background-color: #252525;
 
   /* colors for the buttons */
   --button-start-background-color: hsla(102, 65%, 45%, 1.00);
