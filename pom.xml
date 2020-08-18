@@ -46,7 +46,18 @@
 						<filter>
 							<artifact>*:*</artifact>
 							<excludes>
-								<exclude>META-INF/</exclude>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+								<exclude>META-INF/maven/</exclude>
+								<exclude>META-INF/proguard/</exclude>
+								<exclude>META-INF/LICENSE.txt</exclude>
+								<exclude>META-INF/LICENSE</exclude>
+								<exclude>META-INF/NOTICE.txt</exclude>
+								<exclude>META-INF/NOTICE</exclude>
+								<exclude>META-INF/DEPENDENCIES</exclude>
+								<exclude>META-INF/LGPL2.1</exclude>
+								<exclude>META-INF/AL2.0</exclude>
 								<exclude>about.html</exclude>
 								<exclude>LICENSE</exclude>
 								<exclude>jetty-dir.css</exclude>
@@ -89,7 +100,7 @@
 			<artifactId>docker-java-transport-httpclient5</artifactId>
 			<version>3.2.5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.github.docker-java</groupId>
 			<artifactId>docker-java-core</artifactId>
