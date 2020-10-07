@@ -1,10 +1,13 @@
-FROM adoptopenjdk:14-jre-hotspot
+FROM python:3
 
-COPY target/dockerpanel-dev.jar /dockerpanel.jar
+RUN pip install docker
 
-# Temporarily disabled until https://github.com/Derkades/dockerpanel/issues/25 is fixed
-ENV DISABLE_INPUT=true
+COPY . /app
+
+WORKDIR /app
+
+ENV PORT=80
 
 EXPOSE 80
 
-ENTRYPOINT [ "java", "-jar", "/dockerpanel.jar" ]
+ENTRYPOINT [ "python3", "dockerpanel.py" ]

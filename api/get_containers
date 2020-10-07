@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+from os import environ as env
+import docker_api as docker
+import json
+
+
+print("Content-type: text/json\n")
+
+containers = docker.list_containers()
+
+containers_json = {}
+
+for container in containers:
+    info = {}
+    info['name'] = container.name
+    info['state'] = container.status
+    containers_json[container.id] = info
+
+print(json.dumps(containers_json))
