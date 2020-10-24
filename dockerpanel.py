@@ -1,4 +1,3 @@
-import docker
 from os import environ as env
 import http.server
 from http.server import HTTPServer, CGIHTTPRequestHandler
