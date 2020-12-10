@@ -1,6 +1,6 @@
 # Dockerpanel
 
-An easy to use remote-access panel to manage existing docker containers. No setup required, just add a single docker container.
+An easy to use remote-access panel to manage existing docker containers. No setup required, just add a single docker container. Made specifically for running Minecraft servers using docker-compose but can of course be used for other containers as well.
 
 <img src="https://cdn.discordapp.com/attachments/645710098286510090/688788796149334145/screener_1584290423207.png" height="500">
 
@@ -16,21 +16,25 @@ An easy to use remote-access panel to manage existing docker containers. No setu
 
 This is not a platform to create containers. Use docker-compose for defining your containers, and dockerpanel for easy remote access.
 
-Live demo at [https://dockerpanel.derkades.xyz/](https://dockerpanel.derkad.es)
+Live demo at [https://dockerpanel.derkad.es](https://dockerpanel.derkad.es)
 
 ## Installation
 
+Try it:
+
 ```sh
-docker run -d -p "8080:8080" -v "/var/run/docker.sock:/var/run/docker.sock" derkades/dockerpanel
+docker run -it --rm -p "8080:80" -v "/var/run/docker.sock:/var/run/docker.sock" derkades/dockerpanel
 ```
+
+For installation, refer to docker-compose example below.
 
 Environment variables:
 
 * `THEME` - Web UI theme, go [here](https://github.com/Derkades/dockerpanel/tree/master/resources/themes) for a list of themes.
-* `CONTAINER_WHITELIST` - Space separated list of containers to show in the panel. Without this environment variable set, all containers are shown.
+* `CONTAINERS` - Space separated list of containers to show in the panel. Without this environment variable set, all containers are shown.
 * `TAIL_LINES` - Number of lines to show in the console (default `100`).
-* `DISABLE_INPUT` - Set to `true` to disable terminal input (usually default `false`, but for now in the docker container set to `true` because of [#25](https://github.com/Derkades/dockerpanel/issues/25)).
-* `DISABLE_BUTTONS` - Set to `true` to disable start/stop/restart buttons (default `false`).
+* `DISABLE_INPUT` - Set to disable terminal input
+* `DISABLE_BUTTONS` - Set to disable start/stop/restart buttons (default `false`).
 * `PORT` - Port number for embedded webserver (default `80`).
 * `TITLE` - Site title, defaults to "DockerPanel"
 

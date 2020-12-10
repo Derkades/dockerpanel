@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+from os import environ as env
+import docker_api as docker
+import unicodedata
+import query
+
+
+print("Content-type: text/html\n")
+
+id = query.parse(['id'])
+
+container = docker.get_container(id)
+
+if container is None:
+    print('Container does not exist')
+    exit()
+
+tail = env['TAIL_LINES'] if 'TAIL_LINES' in env else 200
+logs = container.logs(tail=tail).decode()
+# remove weird unicode control characters
+logs = logs.replace('\n', '<br>')
+logs = "".join(ch for ch in logs if unicodedata.category(ch)[0]!="C")
+print(logs)

@@ -7,7 +7,7 @@ services:
     ports: ['8080:80']
     volumes: ['/var/run/docker.sock:/var/run/docker.sock']
     environment:
-      CONTAINERS: proxy smp
+      CONTAINERS: proxy smp # Do not expose any other containers on the system
       # For a list of themes have a look at https://github.com/Derkades/dockerpanel/tree/master/resources/themes
       THEME: default
 
@@ -20,6 +20,6 @@ services:
 
   smp:
     container_name: smp
-    image: derkades/paper:1.15
+    image: derkades/paper:1.16
     volumes: ['/opt/smp:/data']
     stdin_open: true

@@ -35,6 +35,7 @@ $(document).ready(function() {
                 toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while starting the container");
+                console.log("Response: '" + text + "'")
             }
         }, "text");
     });
@@ -56,6 +57,7 @@ $(document).ready(function() {
                 toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while stopping the container");
+                console.log("Response: '" + text + "'")
             }
         }, "text");
     });
@@ -75,6 +77,7 @@ $(document).ready(function() {
                 toastr.warning("Buttons are disabled");
             } else {
                 toastr.error("An error occured while restarting the container");
+                console.log("Response: '" + text + "'")
             }
         }, "text");
     });
@@ -106,10 +109,10 @@ $(document).ready(function() {
         }
     });
 
-    setInterval(loadConsoleText, 1500);
+    setInterval(loadConsoleText, 1000);
     loadConsoleText();
 
-    setInterval(loadNav, 2000);
+    setInterval(loadNav, 3000);
     loadNav();
 });
 
@@ -238,6 +241,7 @@ function sendConsoleCommand(command){
             toastr.error("Request timed out: did not receive a response from docker in time.");
         } else {
             toastr.error("Error occured while sending command");
+            console.log("Response: '" + text + "'")
         }
 
         setTimeout(loadConsoleText, 100)

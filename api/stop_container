@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import docker_api as docker
+from docker.errors import APIError
+import query
+import json
+
+print("Content-type: text/plain\n")
+
+if 'DISABLE_BUTTONS' in environ:
+    print('disabled')
+    exit()
+
+id = query.parse(['id'])
+
+container = docker.get_container(id)
+
+if not container:
+    print('invalid id', end='')
+    exit()
+
+try:
+    container.stop()
+    print('ok', end='')
+except APIError:
+    print('error', end='')

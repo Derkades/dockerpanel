@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+import docker_api as docker
+from docker.errors import APIError
+import json
+import query
+from os import environ
+
+print("Content-type: text/plain\n")
+
+if 'DISABLE_INPUT' in environ:
+    print('disabled')
+    exit()
+
+args = query.parse(['id', 'command'])
+id = args['id']
+command = args['command']
+
+container = docker.get_container(id)
+
+if not container:
+    print('invalid id', end='')
+    exit()
+
+if container.status != 'running':
+    print('offline', end='')
+    exit()
+
+try:
+    sio = container.attach_socket(params={'stdin': 1, 'stream': 1})
+    sio._sock.send(command.encode() + b'\n')
+    # sio.disconnect()
+    sio.close()
+    print('ok', end='')
+except APIError:
+    print('error', end='')
