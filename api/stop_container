@@ -6,6 +6,10 @@ import json
 
 print("Content-type: text/plain\n")
 
+if 'DISABLE_BUTTONS' in environ:
+    print('disabled')
+    exit()
+
 id = query.parse(['id'])
 
 container = docker.get_container(id)

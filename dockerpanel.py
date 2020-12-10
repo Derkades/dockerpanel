@@ -3,6 +3,10 @@ import http.server
 from http.server import HTTPServer, CGIHTTPRequestHandler
 
 def dockerpanel():
+    # replace nobody_uid function that always returns 0 (root)
+    # hack to make CGI processes run as root, required to access docker socket
+    http.server.nobody_uid = lambda *args, **kwargs: 0
+
     port = int(env['PORT']) if 'PORT' in env else 8080
     server_address = ('', port)
     handler = DockerPanelRequestHandler

@@ -15,7 +15,7 @@ if container is None:
     print('Container does not exist')
     exit()
 
-tail = 200
+tail = env['TAIL_LINES'] if 'TAIL_LINES' in env else 200
 logs = container.logs(tail=tail).decode()
 # remove weird unicode control characters
 logs = logs.replace('\n', '<br>')

@@ -10,4 +10,4 @@ ENV PORT=80
 
 EXPOSE 80
 
-ENTRYPOINT [ "python3", "dockerpanel.py" ]
+CMD [ "python3", "dockerpanel.py" ]

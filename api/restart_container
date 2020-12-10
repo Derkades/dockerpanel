@@ -3,8 +3,13 @@ import docker_api as docker
 from docker.errors import APIError
 import json
 import query
+from os import environ
 
 print("Content-type: text/plain\n")
+
+if 'DISABLE_BUTTONS' in environ:
+    print('disabled')
+    exit()
 
 id = query.parse(['id'])
 

@@ -1,6 +1,7 @@
 import docker
 from os import environ as env
 
+# Wrapper class around docker API to prevent accessing non-whitelisted containers
 
 def list_containers(only_running=False):
     client = docker.from_env()
