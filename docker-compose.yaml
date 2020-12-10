@@ -3,11 +3,11 @@ version: '2'
 services:
 
   dockerpanel:
-    image: derkades/dockerpanel
+    image: derkades/dockerpanel:python
     ports: ['8080:80']
     volumes: ['/var/run/docker.sock:/var/run/docker.sock']
     environment:
-      CONTAINER_WHITELIST: proxy smp
+      CONTAINERS: proxy smp
       # For a list of themes have a look at https://github.com/Derkades/dockerpanel/tree/master/resources/themes
       THEME: default
 
