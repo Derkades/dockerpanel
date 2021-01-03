@@ -10,6 +10,11 @@ containers = docker.list_containers()
 
 containers_json = {}
 
+def get_name(container):
+    return container.name
+
+containers = sorted(containers, key=get_name)
+
 for container in containers:
     info = {}
     info['name'] = container.name
