@@ -3,7 +3,7 @@ version: '2'
 services:
 
   dockerpanel:
-    image: derkades/dockerpanel:python
+    image: derkades/dockerpanel
     ports: ['8080:80']
     volumes: ['/var/run/docker.sock:/var/run/docker.sock']
     environment:
