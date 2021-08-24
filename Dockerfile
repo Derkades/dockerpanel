@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-RUN pip install docker
+RUN pip install docker six
 
 COPY . /app
 
