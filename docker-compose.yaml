@@ -2,13 +2,13 @@ version: '2'
 
 services:
 
-  dockerpanel:
+  panel:
     image: derkades/dockerpanel
     ports: ['8080:80']
     volumes: ['/var/run/docker.sock:/var/run/docker.sock']
     environment:
       CONTAINERS: proxy smp # Do not expose any other containers on the system
-      # For a list of themes have a look at https://github.com/Derkades/dockerpanel/tree/master/resources/themes
+      # For a list of themes have a look at https://github.com/Derkades/dockerpanel/tree/master/themes
       THEME: default
 
   proxy:
