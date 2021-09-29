@@ -59,7 +59,7 @@ button {
 
 #button-start {
   background-color: var(--button-start-background-color);
-  color: var(--button-start-text-color);
+  color: var(--button-start-text-color) !important;
 }
 
 #button-start:hover {
@@ -69,7 +69,7 @@ button {
 
 #button-restart {
   background-color: var(--button-restart-background-color);
-  color: var(--button-restart-text-color);
+  color: var(--button-restart-text-color) !important;
 }
 
 #button-restart:hover {
@@ -79,7 +79,7 @@ button {
 
 #button-stop {
   background-color: var(--button-stop-background-color);
-  color: var(--button-stop-text-color);
+  color: var(--button-stop-text-color) !important;
 }
 
 #button-stop:hover {
