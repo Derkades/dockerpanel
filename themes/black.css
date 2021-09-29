@@ -40,6 +40,6 @@
   --button-stop-hover-text-color: hsla(0, 0%, 80%, 1.00);
 
   /* optional theming options */
-  --card-border-radius: 15px;
+  --card-border-radius: 10px;
   --button-border-radius: 50px;
 }
