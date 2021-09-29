@@ -39,9 +39,9 @@ class DockerPanelRequestHandler(CGIHTTPRequestHandler):
             theme = env['THEME'] if 'THEME' in env else 'default'
             with open(f'themes/{theme}.css', 'rb') as file:
                 self.wfile.write(file.read())
-
         else:
             super().do_GET()
+
 
 if __name__ == '__main__':
     dockerpanel()
