@@ -154,7 +154,7 @@ span.terminal-status {
 }
 
 .terminal {
-  height: 580px;
+  height: calc(100vh - 200px);
 }
 
 .terminal-logs, .terminal-input {
