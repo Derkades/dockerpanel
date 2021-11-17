@@ -2,6 +2,7 @@ from os import environ as env
 import http.server
 from http.server import HTTPServer, CGIHTTPRequestHandler
 
+
 def dockerpanel():
     # replace nobody_uid function that always returns 0 (root)
     # hack to make CGI processes run as root, required to access docker socket
