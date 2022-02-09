@@ -3,6 +3,7 @@ from os import environ as env
 import docker_api as docker
 import unicodedata
 import query
+import html
 
 
 print("Content-type: text/html\n")
@@ -17,7 +18,9 @@ if container is None:
 
 tail = env['TAIL_LINES'] if 'TAIL_LINES' in env else 200
 logs = container.logs(tail=tail).decode()
-# remove weird unicode control characters
+logs = html.escape(logs)
 logs = logs.replace('\n', '<br>')
-logs = "".join(ch for ch in logs if unicodedata.category(ch)[0]!="C")
+# remove weird unicode control characters
+logs = "".join(ch for ch in logs if unicodedata.category(ch)[0] != "C")
+
 print(logs)
