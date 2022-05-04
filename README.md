@@ -16,7 +16,7 @@ An easy to use remote-access panel to manage existing docker containers. No setu
 
 This is not a platform to create containers. Use docker-compose for defining your containers, and dockerpanel for easy remote access.
 
-Live demo at [https://dockerpanel-demo.rkslot.nl/](dockerpanel-demo.rkslot.nl)
+Live demo at [dockerpanel-demo.rkslot.nl](https://dockerpanel-demo.rkslot.nl/)
 
 ## Installation
 
