@@ -157,6 +157,11 @@ span.terminal-status {
   height: calc(100vh - 200px);
 }
 
+#collapseContainerSpoiler {
+  max-height: calc(100vh - 150px);
+  overflow-y: scroll;
+}
+
 .terminal-logs, .terminal-input {
   font-size: 0.8em;
   font-family: monospace;
