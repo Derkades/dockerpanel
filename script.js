@@ -117,6 +117,11 @@ $(document).ready(function() {
 });
 
 function loadNav() {
+    // Don't waste resources if tab is not in view
+    if (document.visibilityState === "hidden") {
+        return;
+    }
+
     $.getJSON('/api/get_containers', function(containers) {
         window.containerData = containers;
 
@@ -148,6 +153,11 @@ function loadNav() {
 }
 
 function loadConsoleText() {
+    // Don't waste resources if tab is not in view
+    if (document.visibilityState === "hidden") {
+        return;
+    }
+
     /*
      * If no container is selected, clear the terminal and set the container status
      * dot to offline. This means that if a user switches to a different page and
