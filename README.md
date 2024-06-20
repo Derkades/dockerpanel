@@ -2,14 +2,12 @@
 
 An easy to use remote-access panel to manage existing docker containers. No setup required, just add a single docker container. Made specifically for running Minecraft servers using docker-compose but can of course be used for other containers as well.
 
-<img src="https://cdn.discordapp.com/attachments/645710098286510090/688788796149334145/screener_1584290423207.png" height="500">
-
-![desktop screenshot](https://cdn.discordapp.com/attachments/645710098286510090/688791911783596120/Screenshot_from_2020-03-15_17-52-41.png)
+![screenshot](https://downloads.rkslot.nl/dockerpanel/screenshot.png)
 
 ## Features and design principles
 
 * Start and stop docker containers
-* Run commands in docker containers (send to stdin)
+* Run commands in docker containers (send to stdin, not exec!)
 * View container logs
 * View container status
 * No database, basic configuration through environment variables
