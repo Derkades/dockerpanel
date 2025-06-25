@@ -38,4 +38,4 @@ Environment variables:
 
 ## docker-compose example
 
-See [docker-compose.yaml](https://github.com/Derkades/dockerpanel/blob/master/docker-compose.yaml)
+See [compose.yaml](https://github.com/Derkades/dockerpanel/blob/master/compose.yaml)
